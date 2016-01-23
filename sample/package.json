@@ -7,12 +7,15 @@
       "aurelia-binding": "npm:aurelia-binding@^1.0.0-beta.1.0.5",
       "aurelia-bootstrapper": "npm:aurelia-bootstrapper@^1.0.0-beta.1.0.2",
       "aurelia-framework": "npm:aurelia-framework@^1.0.0-beta.1.0.8",
+      "css": "github:systemjs/plugin-css@^0.1.20",
       "font-awesome": "npm:font-awesome@^4.5.0",
       "systemjs/plugin-css": "github:systemjs/plugin-css@^0.1.20",
       "twbs/bootstrap": "github:twbs/bootstrap@^3.3.6"
     },
     "devDependencies": {
-      "core-js": "npm:core-js@^1.2.6"
+      "core-js": "npm:core-js@^1.2.6",
+      "traceur": "github:jmcriffey/bower-traceur@0.0.93",
+      "traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.93"
     }
   }
 }

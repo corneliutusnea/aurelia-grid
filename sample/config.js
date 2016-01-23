@@ -1,6 +1,7 @@
 System.config({
   baseURL: "/",
   defaultJSExtensions: true,
+  transpiler: "traceur",
   paths: {
     "*": "src/*",
     "github:*": "jspm_packages/github/*",
@@ -23,6 +24,7 @@ System.config({
     "aurelia-bootstrapper": "npm:aurelia-bootstrapper@1.0.0-beta.1.0.2",
     "aurelia-framework": "npm:aurelia-framework@1.0.0-beta.1.0.8",
     "core-js": "npm:core-js@1.2.6",
+    "css": "github:systemjs/plugin-css@0.1.20",
     "font-awesome": "npm:font-awesome@4.5.0",
     "systemjs/plugin-css": "github:systemjs/plugin-css@0.1.20",
     "traceur": "github:jmcriffey/bower-traceur@0.0.93",
@@ -166,9 +168,6 @@ System.config({
       "aurelia-path": "npm:aurelia-path@1.0.0-beta.1",
       "aurelia-task-queue": "npm:aurelia-task-queue@1.0.0-beta.1.0.1",
       "core-js": "npm:core-js@1.2.6"
-    },
-    "npm:babel-runtime@5.8.35": {
-      "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:core-js@1.2.6": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",

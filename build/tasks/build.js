@@ -21,11 +21,7 @@ gulp.task('build-system', function () {
 
 gulp.task('copy-html', function() {
  return gulp.src(paths.html)
-  .pipe(gulp.dest(paths.output + 'es6'))
-  .pipe(gulp.dest(paths.output + 'commonjs'))
-  .pipe(gulp.dest(paths.output + 'amd'))
-  .pipe(gulp.dest(paths.output + 'system'));
- 
+  .pipe(gulp.dest(paths.output));
 });
 
 // this task calls the clean task (located

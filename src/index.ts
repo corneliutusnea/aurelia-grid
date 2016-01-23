@@ -1,3 +1,3 @@
 export function configure(aurelia){
-	aurelia.globalResources('./grid/grid');
+	aurelia.globalResources('./grid');
 }

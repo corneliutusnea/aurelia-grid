@@ -7,6 +7,9 @@
 		"node_modules": true,
 		"jspm_packages": true,
 		
+		"sample/node_modules": true,
+		"sample/jspm_packages": true,
+		
 		".git*": true
 	},
     "editor.insertSpaces": false

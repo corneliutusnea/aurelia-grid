@@ -1,6 +1,6 @@
 System.register([], function(exports_1) {
     function configure(aurelia) {
-        aurelia.globalResources('./grid/grid');
+        aurelia.globalResources('./grid');
     }
     exports_1("configure", configure);
     return {
