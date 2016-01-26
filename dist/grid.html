@@ -32,12 +32,12 @@
 					</tr>
 				</tbody>
 			</table>
-			<div show.bind="noDataMessage && data.count === 0" class="alert alert-warning">${ noRowsMessage }</div>
+			<div show.bind="noDataMessage && data.count === 0" class="alert alert-warning grid-no-data-message">${ noDataMessage }</div>
 		</div>
-		<div class="grid-overlay" if.bind="loading"></div>
-		<div if.bind="loading" class="progress grid-progress-indicator">
+		<div class="grid-overlay" if.bind="data.loading"></div>
+		<div if.bind="data.loading" class="progress grid-progress-indicator">
 			<div class="progress-bar progress-bar-striped active" role="progressbar">
-				<span>${ loadingMessage }</span>
+				<span>${ sourceLoadingMessage }</span>
 			</div>
 		</div>
 	</div>

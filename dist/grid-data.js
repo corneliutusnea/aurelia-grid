@@ -48,25 +48,42 @@ System.register([], function(exports_1) {
                 LocalGridData.prototype.refresh = function () {
                     var _this = this;
                     this.loading = true;
-                    this.dataRead({
+                    var d = this.dataRead({
                         page: this.page,
                         pageSize: this.pageSize
-                    }).then(function (result) {
-                        _this.handleResult(result);
-                        _this.loading = false;
-                    }).catch(function (error) {
-                        if (_this.grid.sourceReadError)
-                            _this.grid.sourceReadError(error);
-                        _this.loading = false;
                     });
+                    if (d.then) {
+                        d.then(function (result) {
+                            _this.handleResult(result);
+                            _this.loading = false;
+                        }).catch(function (error) {
+                            if (_this.grid.sourceReadError)
+                                _this.grid.sourceReadError(error);
+                            _this.loading = false;
+                        });
+                    }
+                    else {
+                        if (Array.isArray(d)) {
+                            this.handleResult(d, true);
+                            this.loading = false;
+                        }
+                    }
+                    ;
                 };
                 /** ============ New Data ============== */
-                LocalGridData.prototype.handleResult = function (result) {
+                LocalGridData.prototype.handleResult = function (result, isArray) {
+                    if (isArray === void 0) { isArray = false; }
                     var r;
                     if (this.grid.sourceTransform)
                         r = this.grid.sourceTransform(result);
-                    else
-                        r = result;
+                    else {
+                        if (isArray) {
+                            r = { data: result, count: result.length };
+                        }
+                        else {
+                            r = result;
+                        }
+                    }
                     if (r) {
                         this.allItems = r.data;
                         this.cache = this.allItems;

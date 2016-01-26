@@ -64,7 +64,7 @@ System.register(['aurelia-framework', './grid-column', './grid-row', './grid-sel
                     this.columnsCanSort = true;
                     this.columnsCanFilter = false;
                     this.sourceAutoLoad = true;
-                    this.sourceLoading = "Loading ...";
+                    this.sourceLoadingMessage = "Loading ...";
                     this.sourceCanPage = true;
                     // CSV with page sizes
                     this.sourcePageSizes = [10, 25, 50];
@@ -107,6 +107,9 @@ System.register(['aurelia-framework', './grid-column', './grid-row', './grid-sel
                     else {
                         this.gridContainer.removeAttribute("style");
                     }
+                };
+                Grid.prototype.refresh = function () {
+                    this.source.refresh();
                 };
                 Object.defineProperty(Grid.prototype, "gridContainer", {
                     get: function () {
@@ -186,7 +189,7 @@ System.register(['aurelia-framework', './grid-column', './grid-row', './grid-sel
                 __decorate([
                     aurelia_framework_1.bindable, 
                     __metadata('design:type', String)
-                ], Grid.prototype, "sourceLoading", void 0);
+                ], Grid.prototype, "sourceLoadingMessage", void 0);
                 __decorate([
                     aurelia_framework_1.bindable, 
                     __metadata('design:type', Boolean)

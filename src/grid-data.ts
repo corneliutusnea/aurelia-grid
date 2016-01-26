@@ -95,26 +95,39 @@ export class LocalGridData extends GridDataSource {
 
 	refresh() {
 		this.loading = true;
-		this.dataRead({
+		var d = this.dataRead({
 			page: this.page,
 			pageSize: this.pageSize
-		}).then(result=> {
-			this.handleResult(result);
-			this.loading = false;
-		}).catch(error=> {
-			if (this.grid.sourceReadError)
-				this.grid.sourceReadError(error);
-			this.loading = false;
 		});
+		if (d.then) {
+			d.then(result=> {
+				this.handleResult(result);
+				this.loading = false;
+			}).catch(error=> {
+				if (this.grid.sourceReadError)
+					this.grid.sourceReadError(error);
+				this.loading = false;
+			})
+		} else {
+			if (Array.isArray(d)) {
+				this.handleResult(d, true);
+				this.loading = false;
+			}
+		};
 	}
 
 	/** ============ New Data ============== */
-	private handleResult(result: any) {
+	private handleResult(result: any, isArray: boolean = false) {
 		var r: IGridData;
 		if (this.grid.sourceTransform)
 			r = this.grid.sourceTransform(result);
-		else
-			r = <IGridData>result;
+		else {
+			if (isArray) {
+				r = { data: result, count: result.length };
+			} else {
+				r = <IGridData>result;
+			}
+		}
 
 		if (r) {
 			this.allItems = r.data;
@@ -198,13 +211,13 @@ export class LocalGridData extends GridDataSource {
 				newSort = "asc";
 				break;
 		}
-		
-		if(!event.ctrlKey){
+
+		if (!event.ctrlKey) {
 			// single sort - press Control for multi-sort
 			this.sorting = {};
 			this.sortProcessingOrder = [];
 		}
-		
+
 
 		this.sorting[column.field] = newSort;
 
@@ -214,7 +227,7 @@ export class LocalGridData extends GridDataSource {
 		if (pos > -1)
 			this.sortProcessingOrder.splice(pos, 1);
 
-		if(newSort)
+		if (newSort)
 			this.sortProcessingOrder.push(column.field);
 
 		// Apply the new sort
@@ -235,30 +248,30 @@ export class LocalGridData extends GridDataSource {
 					fields.push(this.sorting[prop] === "asc" ? (prop) : ("-" + prop));
 			}
 		};
-		
-		if(this.sortProcessingOrder.length > 0)
+
+		if (this.sortProcessingOrder.length > 0)
 			return this.allItems.sort(this.fieldSorter(fields));
 		else	// don't go through sort as it messses up data
 			return data;
 	}
-	
+
 	private fieldSorter(fields) {
-	    return function (a, b) {
-	        return fields
-	            .map(function (o) {
-	                var dir = 1;
-	                if (o[0] === '-') {
-	                   dir = -1;
-	                   o = o.substring(1);
-	                }
-	                if (a[o] > b[o]) return dir;
-	                if (a[o] < b[o]) return -(dir);
-	                return 0;
-	            })
-	            .reduce(function firstNonZeroValue (p,n) {
-	                return p ? p : n;
-	            }, 0);
-	    };
+		return function(a, b) {
+			return fields
+				.map(function(o) {
+					var dir = 1;
+					if (o[0] === '-') {
+						dir = -1;
+						o = o.substring(1);
+					}
+					if (a[o] > b[o]) return dir;
+					if (a[o] < b[o]) return -(dir);
+					return 0;
+				})
+				.reduce(function firstNonZeroValue(p, n) {
+					return p ? p : n;
+				}, 0);
+		};
 	}
 
 

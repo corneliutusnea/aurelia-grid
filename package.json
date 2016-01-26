@@ -1,6 +1,6 @@
 {
   "name": "aurelia-grid",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "An Aurelia Grid",
   "repository": {
     "type": "git",
@@ -9,7 +9,10 @@
   "keywords": [
     "aurelia"
   ],
-  "author": "grid",
+  "author": "Corneliu I. Tusnea <corneliu@acorns.com.au>",
+  "directories": {
+    "lib": "dist"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/corneliutusnea/aurelia-grid/issues"

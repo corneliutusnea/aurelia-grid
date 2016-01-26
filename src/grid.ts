@@ -54,7 +54,7 @@ export class Grid{
 	/** allow the client to pre-process the data to get it in the right shape in case the data is not in the expected shape */
 	@bindable sourceTransform: (result: any) => D.IGridData;
 	@bindable sourceReadError: (result: any) => void;
-	@bindable sourceLoading: 	string = "Loading ...";
+	@bindable sourceLoadingMessage: string = "Loading ...";
 	
 	@bindable sourceCanPage: boolean = true;
 	@bindable noDataMessage: string;
@@ -112,7 +112,11 @@ export class Grid{
 			this.gridContainer.removeAttribute("style");
 		}
 	}
-		
+	
+	refresh(){
+		this.source.refresh();
+	}
+	
 	/** Cached Properties */
 	private _gridContainer: any;
 	get gridContainer(): any{
