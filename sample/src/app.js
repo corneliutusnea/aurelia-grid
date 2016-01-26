@@ -5,7 +5,7 @@ export class App {
   configureRouter(config, router){
     config.title = 'Demo Pages';
     config.map([
-      { route: ['','welcome'],  moduleId: 'local-data',      nav: true, title:'Remote Data' },
+      { route: ['','welcome'],  moduleId: 'local-data',      nav: true, title:'Local Data' },
       { route: 'local',  moduleId: 'local-data',      nav: true, title:'Local Data' }//,
     //   { route: 'templates',  moduleId: 'column-templates',      nav: true, title:'Column Templates' },
     //   { route: 'selection',  moduleId: 'row-selection',      nav: true, title:'Selection' },

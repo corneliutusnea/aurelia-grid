@@ -2,6 +2,7 @@ var gulp = require('gulp');
 var runSequence = require('run-sequence');
 var typescript = require('gulp-typescript');
 var changed = require('gulp-changed');
+var less = require('gulp-less');
 var tsc = require('typescript');
 var paths = require('../paths');
 var plumber = require('gulp-plumber');
@@ -18,10 +19,16 @@ gulp.task('build-system', function () {
 		.pipe(gulp.dest(paths.output));
 });
 
+gulp.task('build-less', function () {
+	return gulp.src(paths.less)
+		.pipe(less({ paths: [paths.output] }))
+		.pipe(gulp.dest(paths.output));
+});
 
-gulp.task('copy-html', function() {
- return gulp.src(paths.html)
-  .pipe(gulp.dest(paths.output));
+
+gulp.task('copy-html', function () {
+	return gulp.src(paths.html)
+		.pipe(gulp.dest(paths.output));
 });
 
 // this task calls the clean task (located
@@ -31,7 +38,7 @@ gulp.task('copy-html', function() {
 gulp.task('build', function (callback) {
 	return runSequence(
 		'clean',
-		['build-system','copy-html'],
+		['build-system', 'build-less', 'copy-html'],
 		callback
 		);
 });

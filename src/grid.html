@@ -1,5 +1,44 @@
 <template>
-	<div class="aurelia-grid">
-		
+	<require from="./aurelia-grid.css!"></require>
+	<div class="aurelia-grid grid-container">
+		<table class="table table-hover table-striped table-responsive grid-header-table">
+			<thead>
+				<tr role="button" if.bind="columnsShowHeaders">
+					<th repeat.for="$column of template.columns" 
+					class="grid-column ${column.headerClass} ${($column.canSort && $parent.columnsCanSort) ? 'grid-column-sortable': 'grid-column-non-sortable'} ${ $column.class !== '' ? $column.class : '' }"
+					click.trigger="$parent.source.sortChanged($column, $event)"
+					>
+						<span class="grid-column-heading">${ $column.heading }</span>
+						<span if.bind="$parent.source.sorting[$column.field] === 'desc'" class="${$parent.icons.sortingDesc}"></span>
+						<span if.bind="$parent.source.sorting[$column.field] === 'asc'" class="${$parent.icons.sortingAsc}"></span>
+					</th>
+				</tr>
+				<tr if.bind="columnsCanFilter" class="grid-column-filters">
+					<th repeat.for="$column of template.columns" class="${ $column.class !== '' ? $column.class : '' }">
+						<div if.bind="$column.canFilter">
+							<input class="form-control" value.bind="$column.filterValue" placeholder.bind="$column.filterPlaceholder" input.delegate="$parent.updateFilters()"></input>
+							<span class="${$parent.icons.removeFilter}"></span>
+						</div>
+					</th>
+				</tr>
+			</thead>
+		</table>
+
+		<!-- Content table -->
+		<div class="grid-content-container">
+			<table class="table table-hover table-striped table-responsive selectable" show.bind="!noDataMessage || (noDataMessage && data.count > 0)">
+				<tbody>
+					<tr role="button" click.delegate="$parent.selection.select($item, $event)">
+					</tr>
+				</tbody>
+			</table>
+			<div show.bind="noDataMessage && data.count === 0" class="alert alert-warning">${ noRowsMessage }</div>
+		</div>
+		<div class="grid-overlay" if.bind="loading"></div>
+		<div if.bind="loading" class="progress grid-progress-indicator">
+			<div class="progress-bar progress-bar-striped active" role="progressbar">
+				<span>${ loadingMessage }</span>
+			</div>
+		</div>
 	</div>
 </template>

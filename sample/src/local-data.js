@@ -4,7 +4,7 @@ export class LocalData {
     constructor() {
     }
 
-    getLocalData(gridOptions) {
+    getLocalData(gridOptions) {	
         // Return a promise that resolves to the data
         var data = [];
         var names = ["charles", "john", "oliver", "fred", "dean", "chris", "pete", "steve", "lee", "rob", "alex", "rose", "mike", "dan", "james", "rebecca", "heather", "kate", "liam"];

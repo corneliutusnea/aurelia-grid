@@ -6,7 +6,7 @@ module.exports = {
 	root: appRoot,
 	source: appRoot + '**/*.ts',
 	html: appRoot + '**/*.html',
-	less: 'content/styles/*.less',
+	less: 'src/*.less',
 	
 	sample: 'sample',
 	
