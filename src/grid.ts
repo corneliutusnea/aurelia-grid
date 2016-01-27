@@ -46,6 +46,8 @@ export class Grid{
 	
 	builder: GridBuilder;
 	
+	aaa: string = 'bbbb';
+	
 	// Data Source
 	@bindable source: D.IGridDataSource;
 	@bindable sourceAutoLoad: boolean = true;
@@ -151,11 +153,26 @@ function processUserTemplate(element: any): GridTemplate{
 		return name.replace(/-([a-z])/g, function (g) { return g[1].toUpperCase(); });
 	}; 
 
+var columnTemplate = 
+'<span class="grid-column-heading">${$column.heading}</span>' +
+'<span if.bind="$column.sorting === \'desc\'" class="${$grid.icons.sortingDesc}"></span>' +
+'<span if.bind="$column.sorting === \'asc\'" class="${$grid.icons.sortingAsc}"></span>';
+
+	// <grid-col can-sort="true" heading="header"> ..
+	// or <grid-col can-sort="true"><heading>header template</heading><template>cell template</template> 
 	columnElements.forEach(c => {
-		var col = new GridColumn(c.innerHTML);
-		var attrs = Array.prototype.slice.call(c.attributes);
+		var col = new GridColumn();
 		
+		var attrs = Array.prototype.slice.call(c.attributes);		
 		attrs.forEach(a => col[camelCaseName(a.name)] = a.value);
+
+		// check for inner <heading> of template
+ 		var headingTemplate = c.querySelector("heading");
+		col.headingTemplate = (headingTemplate && headingTemplate.innerHTML) ? headingTemplate.innerHTML : columnTemplate;
+		
+		// check for inner content of <template> or use full content as template
+		var cellTemplate = c.querySelector("template");
+		col.template = (cellTemplate && cellTemplate.innerHTML) ? cellTemplate.innerHTML : c.innerHTML;
 
 		col.init();
 		cols.push(col);

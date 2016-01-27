@@ -77,17 +77,40 @@ This represents a column in your grid - the same rules apply to grid columns in 
 * **header-class** - CSS class for the column header (the `th`)
 * **can-sort="true|false"** - switch to allow sorting on this column. (default is false).
 * **canFilter="true|false"** - switch to allow filtering on this column. (default is false)
+* **sorting="asc|desc"** - can't be set by default but can be used in the template
 
+## Grid Column - Row Templates
 Anything between the column tags will be the column template. You can place any HTML markup in here and it will be picked up and compiled by Aurelia, so you can interpolate, attach event handlers, bind to expressions etc etc.
-
 You can reference the current data row in the template by using the special `$item` field
 **Example**
 ```html
 <grid-column heading="Customer Name" field="customerName" class="col-md-6 col-customer-name" header-class="col-md-6" can-sort="true" can-filter="true">${item.customerName}</grid-column>
 ```
 
-**Note:**
+## Grid Column - Header Templates
+You can also create custom templates for both header and row cell by adding two elements into the grid column `<heading>` and `<template>`:
+```html
+<grid-col can-sort="true" field="id" class="col-xs-1">
+	<heading><strong>${$column.heading} - ${$column.sorting}</strong></heading>
+	<template>${$item.id}</template>
+</grid-col>
+```
+**Note**: If no `<template>` is found the grid will assume all your content is the row cell template.
+The `heading="name"` attribute is ignored if a `<heading>` element is found inside the [`<grid-col>`](#grid-col) but it's filled in from the attributes list so you can still use it in your heading template.
 
+Inside the Grid Heading Template you have access to the following properties
+* **$column** - the current column with all its properties as defined above in `grid-col`
+* **$grid** - direct reference to the grid. Best if you don't use this directly as the implementation can change.
+
+## Default Grid Column Heading template is:
+```html
+<span class="grid-column-heading">${$column.heading}</span>
+<span if.bind="$column.sorting === \'desc\'" class="glyphicon glyphicon-triangle-top text-primary"></span>
+<span if.bind="$column.sorting === \'asc\'" class="glyphicon glyphicon-triangle-bottom text-primary"></span>
+```
+
+
+**Note:**
 Each row will be in the scope of the `repeat` element, so in order to get back to your consuming viewmodel you need to jump up two levels (up to the `grid` scope then up to your viewmodel scope)
 
 You can use `$parent` to reference the grid scope and `$parent.$parent` to get back to your viewmodel. Hopefully this won't be neccessary in later versions of Aurelia.

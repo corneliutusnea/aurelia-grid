@@ -3,24 +3,24 @@
 	<div class="aurelia-grid grid-container">
 		<table class="table table-hover table-striped table-responsive grid-header-table">
 			<thead>
-				<tr role="button" if.bind="columnsShowHeaders">
-					<th repeat.for="$column of template.columns" 
+				<tr role="button" class="grid-headings">
+					<!--<th
 					class="grid-column ${column.headerClass} ${($column.canSort && $parent.columnsCanSort) ? 'grid-column-sortable': 'grid-column-non-sortable'} ${ $column.class !== '' ? $column.class : '' }"
 					click.trigger="$parent.source.sortChanged($column, $event)"
 					>
 						<span class="grid-column-heading">${ $column.heading }</span>
-						<span if.bind="$parent.source.sorting[$column.field] === 'desc'" class="${$parent.icons.sortingDesc}"></span>
-						<span if.bind="$parent.source.sorting[$column.field] === 'asc'" class="${$parent.icons.sortingAsc}"></span>
-					</th>
+						<span if.bind="$column.sorting === 'desc'" class="${$parent.icons.sortingDesc}"></span>
+						<span if.bind="$column.sorting === 'asc'" class="${$parent.icons.sortingAsc}"></span>
+					</th>-->
 				</tr>
-				<tr if.bind="columnsCanFilter" class="grid-column-filters">
+				<!--<tr if.bind="columnsCanFilter" class="grid-column-filters">
 					<th repeat.for="$column of template.columns" class="${ $column.class !== '' ? $column.class : '' }">
 						<div if.bind="$column.canFilter">
 							<input class="form-control" value.bind="$column.filterValue" placeholder.bind="$column.filterPlaceholder" input.delegate="$parent.updateFilters()"></input>
 							<span class="${$parent.icons.removeFilter}"></span>
 						</div>
 					</th>
-				</tr>
+				</tr>-->
 			</thead>
 		</table>
 

@@ -1,3 +1,5 @@
+import {ViewSlot, View} from 'aurelia-framework';
+
 /** All Attributes on <grid-col  */
 export class GridColumn{
 	heading: string;
@@ -12,15 +14,18 @@ export class GridColumn{
 	
 	/** Value for filtering */
 	filterValue: string;
+	
+	/** Full HTML template for the heading - either read from <heading>...</heading> or build from the heading attribute */
+	headingTemplate: any;
+	
+	/** Cell template for rows */
 	template: any;
-		
-	/** config: GridColumnConfig, template: innerHtml template  */
-	constructor(template: any){
-		this.template = template;
-		
-
-		// copy all properties into "us"
-	}
+	
+	sorting: string;	// asc|desc
+	
+	// internal use
+	slot: ViewSlot;
+	view: View;
 	
 	init(){
 		// we can accept the field to be null if the column has no sorting enabled

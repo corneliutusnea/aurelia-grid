@@ -14,8 +14,12 @@ export class GridBuilder {
 	private container: Container;
 	
 	private element: any;
-	private viewSlot: ViewSlot;
+
+	private rowsViewSlot: ViewSlot;
 	private rowTemplate: any;
+	
+	private headersViewSlots: ViewSlot[];
+	//private headerTemplate: any;
 	
 	private scrollBarWidth: number = 16;
 
@@ -34,25 +38,77 @@ export class GridBuilder {
 		// Listen for window resize so we can re-flow the grid layout
 		this.resizeListener = window.addEventListener('resize', this.headersSyncColumnHeadersWithColumns.bind(this));
 
+		this.buildHeadingTemplate();
+		this.buildRowTemplate();
+	}
+
+	private buildHeadingTemplate(){
+		this.headersViewSlots = [];
+		
+		var theadTr = this.element.querySelector("table.grid-header-table>thead>tr.grid-headings");
+		//this.headersViewSlot = new ViewSlot(thead, true);
+			
+		//this.headerTemplate = document.createDocumentFragment();
+		
+		// var tr = document.createElement("tr");
+		// tr.setAttribute("role","button");
+		// tr.setAttribute("if.bind","columnsShowHeaders");
+		// this.headerTemplate.appendChild(tr);
+
+		// Create the columns headers
+		this.template.columns.forEach(c => {
+			// each TH has it's own viewSlot so they have different bindings
+			var fragment = document.createDocumentFragment();
+			
+			var th = document.createElement("th");
+			th.setAttribute("class", "grid-column ${$column.headerClass} ${($column.canSort && $grid.columnsCanSort) ? 'grid-column-sortable': 'grid-column-non-sortable'} ${ $column.class !== '' ? $column.class : '' }");
+			th.setAttribute("click.trigger","$grid.source.sortChanged($column, $event)");
+
+			th.innerHTML = c.headingTemplate;
+			
+			fragment.appendChild(th);
+			
+			var view = this.viewCompiler.compile(fragment, this.viewResources).create(this.container);
+			var bindingContext = {
+				'$grid' : this.grid,
+				'$column' : c,
+			}
+			view.bind(bindingContext, this.grid);
+			
+			var columnSlot = new ViewSlot(theadTr, true);
+			columnSlot.add(view);
+			columnSlot.attached();
+			
+			c.slot = columnSlot;
+			c.view = view;
+			
+			this.headersViewSlots.push(columnSlot);
+		});
+		
+		// todo - we need to build the header for the filters
+
+		// Now compile the template
+	
+		
+		// wtf are we doing with the $column?
+		
+	}
+
+	private buildRowTemplate() {
 		// The table body element will host the rows
 		var tbody = this.element.querySelector("table>tbody");
-		this.viewSlot = new ViewSlot(tbody, true);
+		this.rowsViewSlot = new ViewSlot(tbody, true);
 
 		// Get the row template too and add a repeater/class
 		var row = tbody.querySelector("tr");
 
-		this.buildRowTemplate(row);
-
 		this.rowTemplate = document.createDocumentFragment();
 		this.rowTemplate.appendChild(row);
-
-		this.buildTemplates();
-	}
-
-	private buildRowTemplate(row) {
+		
 		// builds <template><tr repeat.for="$item of data">...</template>
 		row.setAttribute("repeat.for", "$item of source.items");
 		row.setAttribute("class", "${ $item === $parent.selectedItem ? 'info' : '' }");
+		
 		// TODO: Do we allow the user to customise the row template or just
 		// provide a callback?
 		// Copy any user specified row attributes to the row template
@@ -61,9 +117,7 @@ export class GridBuilder {
 				row.setAttribute(prop, this.template.rowAttributes[prop]);
 			}
 		}
-	}
-
-	private buildTemplates() {
+		
 		// Create a fragment we will manipulate the DOM in
 		var rowTemplate = this.rowTemplate.cloneNode(true);
 		var row = rowTemplate.querySelector("tr");
@@ -93,17 +147,16 @@ export class GridBuilder {
 		view.bind(this.grid);
 
 		// based on viewSlot.swap() from templating 0.16.0
-		let removeResponse = this.viewSlot.removeAll();
+		let removeResponse = this.rowsViewSlot.removeAll();
 
 		if (removeResponse instanceof Promise) {
-			removeResponse.then(() => this.viewSlot.add(view));
+			removeResponse.then(() => this.rowsViewSlot.add(view));
 		}
 
-		this.viewSlot.add(view);
+		this.rowsViewSlot.add(view);
 
 		// code above replaces the following call
-		//this.viewSlot.swap(view);
-		this.viewSlot.attached();
+		this.rowsViewSlot.attached();
 
 		// HACK: why is the change handler not firing for noRowsMessage?
 		// this.noRowsMessageChanged(); /???

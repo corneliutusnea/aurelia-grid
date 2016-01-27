@@ -12,11 +12,8 @@ export interface IGridDataSource {
 	pageSize: number;
 	
 	/** Dictionary of sorting name:asc|desc  */
-	sorting: {};
+	sorting: Array<GridColumn>;
 	
-	/** Order of the fields to be sorted (fieldNames) */
-	sortProcessingOrder: string[];
-
 	/** grid was attached - start loading & monitoring for changes */
 	attached();
 	/** trigger a refresh */
@@ -46,8 +43,7 @@ export class GridDataSource implements IGridDataSource {
 	page: number = 1;
 	pageSize: number;
 
-	sorting: {} = {};
-	sortProcessingOrder: string[] = new Array<string>();
+	sorting: Array<GridColumn> = new Array<GridColumn>();
 
 	protected grid: Grid;
 
@@ -200,7 +196,7 @@ export class LocalGridData extends GridDataSource {
 		var newSort = undefined;
 
 		// Figure out which way this field should be sorting
-		switch (this.sorting[column.field]) {
+		switch (column.sorting) {
 			case "asc":
 				newSort = "desc";
 				break;
@@ -211,24 +207,22 @@ export class LocalGridData extends GridDataSource {
 				newSort = "asc";
 				break;
 		}
-
+		
 		if (!event.ctrlKey) {
-			// single sort - press Control for multi-sort
-			this.sorting = {};
-			this.sortProcessingOrder = [];
+			this.sorting.forEach(s=>s.sorting = "");
+			this.sorting = [];
 		}
 
-
-		this.sorting[column.field] = newSort;
+		column.sorting = newSort;
 
 		// If the sort is present in the sort stack, slice it to the back of the stack, otherwise just add it
-		var pos = this.sortProcessingOrder.indexOf(column.field);
+ 		var pos = this.sorting.indexOf(column);
 
 		if (pos > -1)
-			this.sortProcessingOrder.splice(pos, 1);
+			this.sorting.splice(pos, 1);
 
 		if (newSort)
-			this.sortProcessingOrder.push(column.field);
+			this.sorting.push(column);
 
 		// Apply the new sort
 		this.refresh();
@@ -240,16 +234,12 @@ export class LocalGridData extends GridDataSource {
 		var fields = [];
 
 		// Get the fields in the "sortingORder"
-		for (var i = 0; i < this.sortProcessingOrder.length; i++) {
-			var sort = this.sortProcessingOrder[i];
-
-			for (var prop in this.sorting) {
-				if (sort == prop && this.sorting[prop] !== "")
-					fields.push(this.sorting[prop] === "asc" ? (prop) : ("-" + prop));
-			}
+		for (var i = 0; i < this.sorting.length; i++) {
+			var col = this.sorting[i];
+			fields.push(col.sorting === "asc" ? (col.field) : ("-" + col.field));
 		};
 
-		if (this.sortProcessingOrder.length > 0)
+		if (this.sorting.length > 0)
 			return this.allItems.sort(this.fieldSorter(fields));
 		else	// don't go through sort as it messses up data
 			return data;

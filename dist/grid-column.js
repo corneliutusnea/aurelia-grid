@@ -5,10 +5,7 @@ System.register([], function(exports_1) {
         execute: function() {
             /** All Attributes on <grid-col  */
             GridColumn = (function () {
-                /** config: GridColumnConfig, template: innerHtml template  */
-                function GridColumn(template) {
-                    this.template = template;
-                    // copy all properties into "us"
+                function GridColumn() {
                 }
                 GridColumn.prototype.init = function () {
                     // we can accept the field to be null if the column has no sorting enabled

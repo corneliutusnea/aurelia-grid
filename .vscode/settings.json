@@ -5,7 +5,7 @@
 		"**/.DS_Store": true,
 		
 		"node_modules": true,
-		"jspm_packages": true,
+		"jspm_packages": false,
 		
 		"sample/node_modules": true,
 		"sample/jspm_packages": true,

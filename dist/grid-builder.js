@@ -9,6 +9,7 @@ System.register(['aurelia-framework'], function(exports_1) {
         execute: function() {
             GridBuilder = (function () {
                 function GridBuilder(grid, element) {
+                    //private headerTemplate: any;
                     this.scrollBarWidth = 16;
                     this.grid = grid;
                     this.element = element;
@@ -21,17 +22,54 @@ System.register(['aurelia-framework'], function(exports_1) {
                 GridBuilder.prototype.build = function () {
                     // Listen for window resize so we can re-flow the grid layout
                     this.resizeListener = window.addEventListener('resize', this.headersSyncColumnHeadersWithColumns.bind(this));
+                    this.buildHeadingTemplate();
+                    this.buildRowTemplate();
+                };
+                GridBuilder.prototype.buildHeadingTemplate = function () {
+                    var _this = this;
+                    this.headersViewSlots = [];
+                    var theadTr = this.element.querySelector("table.grid-header-table>thead>tr.grid-headings");
+                    //this.headersViewSlot = new ViewSlot(thead, true);
+                    //this.headerTemplate = document.createDocumentFragment();
+                    // var tr = document.createElement("tr");
+                    // tr.setAttribute("role","button");
+                    // tr.setAttribute("if.bind","columnsShowHeaders");
+                    // this.headerTemplate.appendChild(tr);
+                    // Create the columns headers
+                    this.template.columns.forEach(function (c) {
+                        // each TH has it's own viewSlot so they have different bindings
+                        var fragment = document.createDocumentFragment();
+                        var th = document.createElement("th");
+                        th.setAttribute("class", "grid-column ${$column.headerClass} ${($column.canSort && $grid.columnsCanSort) ? 'grid-column-sortable': 'grid-column-non-sortable'} ${ $column.class !== '' ? $column.class : '' }");
+                        th.setAttribute("click.trigger", "$grid.source.sortChanged($column, $event)");
+                        th.innerHTML = c.headingTemplate;
+                        fragment.appendChild(th);
+                        var view = _this.viewCompiler.compile(fragment, _this.viewResources).create(_this.container);
+                        var bindingContext = {
+                            '$grid': _this.grid,
+                            '$column': c,
+                        };
+                        view.bind(bindingContext, _this.grid);
+                        var columnSlot = new aurelia_framework_1.ViewSlot(theadTr, true);
+                        columnSlot.add(view);
+                        columnSlot.attached();
+                        c.slot = columnSlot;
+                        c.view = view;
+                        _this.headersViewSlots.push(columnSlot);
+                    });
+                    // todo - we need to build the header for the filters
+                    // Now compile the template
+                    // wtf are we doing with the $column?
+                };
+                GridBuilder.prototype.buildRowTemplate = function () {
+                    var _this = this;
                     // The table body element will host the rows
                     var tbody = this.element.querySelector("table>tbody");
-                    this.viewSlot = new aurelia_framework_1.ViewSlot(tbody, true);
+                    this.rowsViewSlot = new aurelia_framework_1.ViewSlot(tbody, true);
                     // Get the row template too and add a repeater/class
                     var row = tbody.querySelector("tr");
-                    this.buildRowTemplate(row);
                     this.rowTemplate = document.createDocumentFragment();
                     this.rowTemplate.appendChild(row);
-                    this.buildTemplates();
-                };
-                GridBuilder.prototype.buildRowTemplate = function (row) {
                     // builds <template><tr repeat.for="$item of data">...</template>
                     row.setAttribute("repeat.for", "$item of source.items");
                     row.setAttribute("class", "${ $item === $parent.selectedItem ? 'info' : '' }");
@@ -43,9 +81,6 @@ System.register(['aurelia-framework'], function(exports_1) {
                             row.setAttribute(prop, this.template.rowAttributes[prop]);
                         }
                     }
-                };
-                GridBuilder.prototype.buildTemplates = function () {
-                    var _this = this;
                     // Create a fragment we will manipulate the DOM in
                     var rowTemplate = this.rowTemplate.cloneNode(true);
                     var row = rowTemplate.querySelector("tr");
@@ -70,14 +105,13 @@ System.register(['aurelia-framework'], function(exports_1) {
                     // Instead, must call view.bind(context)
                     view.bind(this.grid);
                     // based on viewSlot.swap() from templating 0.16.0
-                    var removeResponse = this.viewSlot.removeAll();
+                    var removeResponse = this.rowsViewSlot.removeAll();
                     if (removeResponse instanceof Promise) {
-                        removeResponse.then(function () { return _this.viewSlot.add(view); });
+                        removeResponse.then(function () { return _this.rowsViewSlot.add(view); });
                     }
-                    this.viewSlot.add(view);
+                    this.rowsViewSlot.add(view);
                     // code above replaces the following call
-                    //this.viewSlot.swap(view);
-                    this.viewSlot.attached();
+                    this.rowsViewSlot.attached();
                     // HACK: why is the change handler not firing for noRowsMessage?
                     // this.noRowsMessageChanged(); /???
                 };
