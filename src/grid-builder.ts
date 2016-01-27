@@ -46,14 +46,6 @@ export class GridBuilder {
 		this.headersViewSlots = [];
 		
 		var theadTr = this.element.querySelector("table.grid-header-table>thead>tr.grid-headings");
-		//this.headersViewSlot = new ViewSlot(thead, true);
-			
-		//this.headerTemplate = document.createDocumentFragment();
-		
-		// var tr = document.createElement("tr");
-		// tr.setAttribute("role","button");
-		// tr.setAttribute("if.bind","columnsShowHeaders");
-		// this.headerTemplate.appendChild(tr);
 
 		// Create the columns headers
 		this.template.columns.forEach(c => {
@@ -70,6 +62,7 @@ export class GridBuilder {
 			
 			var view = this.viewCompiler.compile(fragment, this.viewResources).create(this.container);
 			var bindingContext = {
+				// I'm having problem if I try to use $parent. The template never seems to see that
 				'$grid' : this.grid,
 				'$column' : c,
 			}
@@ -84,14 +77,6 @@ export class GridBuilder {
 			
 			this.headersViewSlots.push(columnSlot);
 		});
-		
-		// todo - we need to build the header for the filters
-
-		// Now compile the template
-	
-		
-		// wtf are we doing with the $column?
-		
 	}
 
 	private buildRowTemplate() {

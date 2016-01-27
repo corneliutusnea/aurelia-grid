@@ -29,12 +29,6 @@ System.register(['aurelia-framework'], function(exports_1) {
                     var _this = this;
                     this.headersViewSlots = [];
                     var theadTr = this.element.querySelector("table.grid-header-table>thead>tr.grid-headings");
-                    //this.headersViewSlot = new ViewSlot(thead, true);
-                    //this.headerTemplate = document.createDocumentFragment();
-                    // var tr = document.createElement("tr");
-                    // tr.setAttribute("role","button");
-                    // tr.setAttribute("if.bind","columnsShowHeaders");
-                    // this.headerTemplate.appendChild(tr);
                     // Create the columns headers
                     this.template.columns.forEach(function (c) {
                         // each TH has it's own viewSlot so they have different bindings
@@ -46,6 +40,7 @@ System.register(['aurelia-framework'], function(exports_1) {
                         fragment.appendChild(th);
                         var view = _this.viewCompiler.compile(fragment, _this.viewResources).create(_this.container);
                         var bindingContext = {
+                            // I'm having problem if I try to use $parent. The template never seems to see that
                             '$grid': _this.grid,
                             '$column': c,
                         };
@@ -57,9 +52,6 @@ System.register(['aurelia-framework'], function(exports_1) {
                         c.view = view;
                         _this.headersViewSlots.push(columnSlot);
                     });
-                    // todo - we need to build the header for the filters
-                    // Now compile the template
-                    // wtf are we doing with the $column?
                 };
                 GridBuilder.prototype.buildRowTemplate = function () {
                     var _this = this;

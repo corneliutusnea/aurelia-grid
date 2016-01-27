@@ -68,13 +68,10 @@ System.register(['aurelia-framework', './grid-column', './grid-row', './grid-sel
         execute: function() {
             Grid = (function () {
                 function Grid(element, vc, vr, container, targetInstruction, bindingEngine) {
-                    // Properties
-                    // Loading
                     // Columns
                     this.columnsShowHeaders = true;
                     this.columnsCanSort = true;
                     this.columnsCanFilter = false;
-                    this.aaa = 'bbbb';
                     this.sourceAutoLoad = true;
                     this.sourceLoadingMessage = "Loading ...";
                     this.sourceCanPage = true;

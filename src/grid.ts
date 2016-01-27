@@ -29,9 +29,6 @@ export class Grid{
 	
 	template: GridTemplate;
 	
-	// Properties
-	// Loading
-	
 	// Columns
 	@bindable columnsShowHeaders: boolean = true;
 	@bindable columnsCanSort: boolean = true;
@@ -45,8 +42,6 @@ export class Grid{
 	@bindable selectedItem: any;
 	
 	builder: GridBuilder;
-	
-	aaa: string = 'bbbb';
 	
 	// Data Source
 	@bindable source: D.IGridDataSource;
