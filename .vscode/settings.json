@@ -8,7 +8,7 @@
 		"jspm_packages": false,
 		
 		"sample/node_modules": true,
-		"sample/jspm_packages": true,
+		"sample/jspm_packages": false,
 		
 		".git*": true
 	},

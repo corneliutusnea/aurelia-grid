@@ -11,12 +11,16 @@ System.register([], function(exports_1) {
             GridDataSource = (function () {
                 function GridDataSource(grid) {
                     this.page = 1;
+                    this.pageCount = 0;
                     this.sorting = new Array();
                     this.grid = grid;
                 }
                 GridDataSource.prototype.attached = function () {
                     this.page = 1;
-                    this.pageSize = this.grid.sourcePageSizes[0];
+                    if (this.grid.pager && this.grid.pager.pageSizes)
+                        this.pageSize = this.grid.pager.pageSizes[0];
+                    else
+                        this.pageSize = 10;
                     // process page sizes
                     if (this.grid.sourceAutoLoad) {
                         this.refresh();
@@ -28,6 +32,12 @@ System.register([], function(exports_1) {
                 };
                 GridDataSource.prototype.updatePager = function () {
                     // TODO: 
+                };
+                GridDataSource.prototype.onData = function () {
+                    if (this.pageSize == 0)
+                        this.pageSize = 10;
+                    this.pageCount = Math.ceil(this.count / this.pageSize);
+                    this.grid.pager.refresh();
                 };
                 GridDataSource.prototype.unbind = function () {
                 };
@@ -89,6 +99,7 @@ System.register([], function(exports_1) {
                         this.count = r.count;
                         this.filterAndSortLocalData();
                     }
+                    _super.prototype.onData.call(this);
                 };
                 LocalGridData.prototype.filterAndSortLocalData = function () {
                     var _this = this;

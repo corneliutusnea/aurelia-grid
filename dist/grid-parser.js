@@ -1,0 +1,81 @@
+System.register(['./grid-column', './grid-row', './grid-pager'], function(exports_1) {
+    var grid_column_1, grid_row_1, grid_pager_1;
+    var GridParser;
+    return {
+        setters:[
+            function (grid_column_1_1) {
+                grid_column_1 = grid_column_1_1;
+            },
+            function (grid_row_1_1) {
+                grid_row_1 = grid_row_1_1;
+            },
+            function (grid_pager_1_1) {
+                grid_pager_1 = grid_pager_1_1;
+            }],
+        execute: function() {
+            /** Helper to do the parsing of the grid content */
+            GridParser = (function () {
+                function GridParser() {
+                }
+                GridParser.prototype.parse = function (element) {
+                    var result = {
+                        columns: this.parseGridCols(element),
+                        rowAttributes: this.parseGridRow(element),
+                        pager: this.parseGridPager(element)
+                    };
+                    return result;
+                };
+                GridParser.prototype.parseGridCols = function (element) {
+                    var _this = this;
+                    var rowElement = element.querySelector("grid-row");
+                    var columnElements = Array.prototype.slice.call(rowElement.querySelectorAll("grid-col"));
+                    var cols = [];
+                    var columnTemplate = '<span class="grid-column-heading">${$column.heading}</span>' +
+                        '<span if.bind="$column.sorting === \'desc\'" class="${$grid.icons.sortingDesc}"></span>' +
+                        '<span if.bind="$column.sorting === \'asc\'" class="${$grid.icons.sortingAsc}"></span>';
+                    // <grid-col can-sort="true" heading="header"> ..
+                    // or <grid-col can-sort="true"><heading>header template</heading><template>cell template</template> 
+                    columnElements.forEach(function (c) {
+                        var col = new grid_column_1.GridColumn();
+                        var attrs = Array.prototype.slice.call(c.attributes);
+                        attrs.forEach(function (a) { return col[_this.camelCaseName(a.name)] = a.value; });
+                        // check for inner <heading> of template
+                        var headingTemplate = c.querySelector("heading");
+                        col.headingTemplate = (headingTemplate && headingTemplate.innerHTML) ? headingTemplate.innerHTML : columnTemplate;
+                        // check for inner content of <template> or use full content as template
+                        var cellTemplate = c.querySelector("template");
+                        col.template = (cellTemplate && cellTemplate.innerHTML) ? cellTemplate.innerHTML : c.innerHTML;
+                        col.init();
+                        cols.push(col);
+                    });
+                    return cols;
+                };
+                GridParser.prototype.parseGridRow = function (element) {
+                    var rowElement = element.querySelector("grid-row");
+                    // Pull any row attrs into a hash object
+                    var rowsAttributes = new grid_row_1.GridRowAttributes();
+                    var attrs = Array.prototype.slice.call(rowElement.attributes);
+                    attrs.forEach(function (a) { return rowsAttributes[a.name] = a.value; });
+                    return rowsAttributes;
+                };
+                GridParser.prototype.parseGridPager = function (element) {
+                    var _this = this;
+                    var pagerElement = element.querySelector("grid-pager");
+                    var pager = new grid_pager_1.GridPager();
+                    // fill in all properties
+                    var attrs = Array.prototype.slice.call(pagerElement.attributes);
+                    attrs.forEach(function (a) { return pager[_this.camelCaseName(a.name)] = a.value; });
+                    var template = pagerElement.querySelector("template");
+                    pager.template = (template && template.innerHTML) ? template.innerHTML : null;
+                    return pager;
+                };
+                GridParser.prototype.camelCaseName = function (name) {
+                    return name.replace(/-([a-z])/g, function (g) { return g[1].toUpperCase(); });
+                };
+                ;
+                return GridParser;
+            })();
+            exports_1("GridParser", GridParser);
+        }
+    }
+});

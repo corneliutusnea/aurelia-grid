@@ -10,6 +10,7 @@ export interface IGridDataSource {
 	page: number;
 	/** 10 - default page size */
 	pageSize: number;
+	pageCount: number;
 	
 	/** Dictionary of sorting name:asc|desc  */
 	sorting: Array<GridColumn>;
@@ -40,8 +41,10 @@ export class GridDataSource implements IGridDataSource {
 	count: number;
 	items: any[];
 	loading: boolean;
+	
 	page: number = 1;
 	pageSize: number;
+	pageCount: number = 0;
 
 	sorting: Array<GridColumn> = new Array<GridColumn>();
 
@@ -54,10 +57,12 @@ export class GridDataSource implements IGridDataSource {
 	attached() {
 		this.page = 1;
 
-		this.pageSize = this.grid.sourcePageSizes[0];
+		if(this.grid.pager && this.grid.pager.pageSizes)
+			this.pageSize = this.grid.pager.pageSizes[0];
+		else
+			this.pageSize = 10;
 		
 		// process page sizes
-		
 		if (this.grid.sourceAutoLoad) {
 			this.refresh();
 		}
@@ -69,6 +74,13 @@ export class GridDataSource implements IGridDataSource {
 
 	updatePager() {
 		// TODO: 
+	}
+	
+	onData(){
+		if(this.pageSize == 0)
+			this.pageSize = 10;
+		this.pageCount = Math.ceil(this.count / this.pageSize);
+		this.grid.pager.refresh();
 	}
 
 	unbind() {
@@ -132,6 +144,7 @@ export class LocalGridData extends GridDataSource {
 
 			this.filterAndSortLocalData();
 		}
+		super.onData();
 	}
 
 	private filterAndSortLocalData() {
@@ -147,7 +160,7 @@ export class LocalGridData extends GridDataSource {
 			tempData = this.applySort(tempData);
 
 		// 3. Now apply paging
-		if (this.grid.sourceCanPage)
+		if (this.grid.paginationEnabled)
 			tempData = this.applyPage(tempData);
 
 		this.items = tempData;

@@ -13,6 +13,9 @@
 				</grid-col>
                 <grid-col can-sort="true" heading="Name" field="name" class="col-xs-11" can-filter="false">${ $item.name }</grid-col>
             </grid-row>
+            <grid-pager>
+                <!--<template>Page ${source.page} of ${source.pageCount}. Total Items ${source.count}.</template>-->
+            </grid-pager>
         </grid>
     </section>
 </template>

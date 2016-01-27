@@ -6,7 +6,10 @@ import {GridRowAttributes} from './grid-row';
 import {GridSelection} from './grid-selection';
 import {GridBuilder} from './grid-builder';
 import {GridIcons} from './grid-icons';
-import * as D from './grid-data';
+import {GridPager} from './grid-pager';
+
+import {GridTemplate, GridParser} from './grid-parser';
+import * as D from './grid-source';
 
 @customElement('grid')
 @processContent(function(viewCompiler, viewResources, element, instruction) {
@@ -15,6 +18,7 @@ import * as D from './grid-data';
 	
 	instruction.columns = result.columns;
 	instruction.rowAttributes = result.rowAttributes;
+	instruction.pager = result.pager;
 
 	return true;
 })
@@ -53,11 +57,11 @@ export class Grid{
 	@bindable sourceReadError: (result: any) => void;
 	@bindable sourceLoadingMessage: string = "Loading ...";
 	
-	@bindable sourceCanPage: boolean = true;
-	@bindable noDataMessage: string;
-	
-	// CSV with page sizes
-	@bindable sourcePageSizes: number[] = [10, 25, 50];
+	// paginationEnabled
+	pager: GridPager;
+	@bindable paginationEnabled: boolean = true;
+
+	@bindable noDataMessage: string;	
 		
 	constructor(element, vc: ViewCompiler, vr: ViewResources, container: Container, targetInstruction: TargetInstruction, bindingEngine: BindingEngine) {
 		this.element = element;
@@ -67,7 +71,9 @@ export class Grid{
 		this.bindingEngine = bindingEngine;
 
 		this.template = <GridTemplate>((<any>targetInstruction).behaviorInstructions[0]);
-
+		this.pager = this.template.pager;
+		this.pager.grid = this;
+		
 		this.selection = new GridSelection(this);
 		this.builder = new GridBuilder(this, this.element);
 	}
@@ -98,6 +104,7 @@ export class Grid{
 	attached(){
 		this.gridHeightChanged();
 		this.source.attached();
+		this.pager.refresh();
 	}
 	
 	
@@ -134,49 +141,8 @@ export class Grid{
 	}
 }
 
-export interface GridTemplate{
-	columns: GridColumn[];
-	rowAttributes: GridRowAttributes;
-}
+
 function processUserTemplate(element: any): GridTemplate{
-	var cols = [];
-	
-	var rowElement = element.querySelector("grid-row");
-	var columnElements = Array.prototype.slice.call(rowElement.querySelectorAll("grid-col"));
-
-	var camelCaseName = (name:string):string => {
-		return name.replace(/-([a-z])/g, function (g) { return g[1].toUpperCase(); });
-	}; 
-
-var columnTemplate = 
-'<span class="grid-column-heading">${$column.heading}</span>' +
-'<span if.bind="$column.sorting === \'desc\'" class="${$grid.icons.sortingDesc}"></span>' +
-'<span if.bind="$column.sorting === \'asc\'" class="${$grid.icons.sortingAsc}"></span>';
-
-	// <grid-col can-sort="true" heading="header"> ..
-	// or <grid-col can-sort="true"><heading>header template</heading><template>cell template</template> 
-	columnElements.forEach(c => {
-		var col = new GridColumn();
-		
-		var attrs = Array.prototype.slice.call(c.attributes);		
-		attrs.forEach(a => col[camelCaseName(a.name)] = a.value);
-
-		// check for inner <heading> of template
- 		var headingTemplate = c.querySelector("heading");
-		col.headingTemplate = (headingTemplate && headingTemplate.innerHTML) ? headingTemplate.innerHTML : columnTemplate;
-		
-		// check for inner content of <template> or use full content as template
-		var cellTemplate = c.querySelector("template");
-		col.template = (cellTemplate && cellTemplate.innerHTML) ? cellTemplate.innerHTML : c.innerHTML;
-
-		col.init();
-		cols.push(col);
-	});
-
-	// Pull any row attrs into a hash object
-	var rowsAttributes = new GridRowAttributes();
-	var attrs = Array.prototype.slice.call(rowElement.attributes);
-	attrs.forEach(a => rowsAttributes[a.name] = a.value);
-
-	return { columns: cols, rowAttributes: rowsAttributes };
+	var parser = new GridParser();
+	return parser.parse(element);	
 }

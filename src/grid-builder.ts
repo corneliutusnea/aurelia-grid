@@ -3,7 +3,8 @@ import {ViewCompiler, ViewSlot, ViewResources, Container} from 'aurelia-framewor
 
 /** Builds the Grid based on the existing template - maybe we can replace this in the future */
 /** Currently this builds based on Bootstrap grid template */
-import {Grid, GridTemplate} from './grid';
+import {Grid} from './grid';
+import {GridTemplate} from './grid-parser';
 
 export class GridBuilder {
 	private grid: Grid;
@@ -19,7 +20,8 @@ export class GridBuilder {
 	private rowTemplate: any;
 	
 	private headersViewSlots: ViewSlot[];
-	//private headerTemplate: any;
+	
+	private pagerViewSlot: ViewSlot;
 	
 	private scrollBarWidth: number = 16;
 
@@ -40,6 +42,7 @@ export class GridBuilder {
 
 		this.buildHeadingTemplate();
 		this.buildRowTemplate();
+		this.buildPagerTemplate();
 	}
 
 	private buildHeadingTemplate(){
@@ -145,6 +148,35 @@ export class GridBuilder {
 
 		// HACK: why is the change handler not firing for noRowsMessage?
 		// this.noRowsMessageChanged(); /???
+	}
+	
+	private buildPagerTemplate(){
+		// build the custom template for the pager (if it exists)
+		// otherwise the default template will be shown
+		var thost = this.element.querySelector("div.grid-footer-custom-container");
+		if(!this.grid.pager.template)
+		{
+			// todo - remove the thost somehow
+			return;
+		}
+
+		this.pagerViewSlot = new ViewSlot(thost, true);
+		var template = document.createDocumentFragment();
+		var templateValue = document.createElement('div');
+		template.appendChild(templateValue);
+		templateValue.innerHTML = this.grid.pager.template;
+		
+		var view = this.viewCompiler.compile(template, this.viewResources).create(this.container);
+		var bindingContext = {
+			// I'm having problem if I try to use $parent. The template never seems to see that
+			'$parent': this.grid,
+			'$grid' : this.grid,
+			'$pager' : this.grid.pager,
+			'$source': this.grid.source
+		};
+		view.bind(bindingContext, this.grid);
+		this.pagerViewSlot.add(view);
+		this.pagerViewSlot.attached();
 	}
 	
 	private resizeListener: any;

@@ -9,7 +9,6 @@ System.register(['aurelia-framework'], function(exports_1) {
         execute: function() {
             GridBuilder = (function () {
                 function GridBuilder(grid, element) {
-                    //private headerTemplate: any;
                     this.scrollBarWidth = 16;
                     this.grid = grid;
                     this.element = element;
@@ -24,6 +23,7 @@ System.register(['aurelia-framework'], function(exports_1) {
                     this.resizeListener = window.addEventListener('resize', this.headersSyncColumnHeadersWithColumns.bind(this));
                     this.buildHeadingTemplate();
                     this.buildRowTemplate();
+                    this.buildPagerTemplate();
                 };
                 GridBuilder.prototype.buildHeadingTemplate = function () {
                     var _this = this;
@@ -106,6 +106,31 @@ System.register(['aurelia-framework'], function(exports_1) {
                     this.rowsViewSlot.attached();
                     // HACK: why is the change handler not firing for noRowsMessage?
                     // this.noRowsMessageChanged(); /???
+                };
+                GridBuilder.prototype.buildPagerTemplate = function () {
+                    // build the custom template for the pager (if it exists)
+                    // otherwise the default template will be shown
+                    var thost = this.element.querySelector("div.grid-footer-custom-container");
+                    if (!this.grid.pager.template) {
+                        // todo - remove the thost somehow
+                        return;
+                    }
+                    this.pagerViewSlot = new aurelia_framework_1.ViewSlot(thost, true);
+                    var template = document.createDocumentFragment();
+                    var templateValue = document.createElement('div');
+                    template.appendChild(templateValue);
+                    templateValue.innerHTML = this.grid.pager.template;
+                    var view = this.viewCompiler.compile(template, this.viewResources).create(this.container);
+                    var bindingContext = {
+                        // I'm having problem if I try to use $parent. The template never seems to see that
+                        '$parent': this.grid,
+                        '$grid': this.grid,
+                        '$pager': this.grid.pager,
+                        '$source': this.grid.source
+                    };
+                    view.bind(bindingContext, this.grid);
+                    this.pagerViewSlot.add(view);
+                    this.pagerViewSlot.attached();
                 };
                 GridBuilder.prototype.unbind = function () {
                     window.removeEventListener('resize', this.resizeListener);
