@@ -1,4 +1,4 @@
-import {bindable, inject, BindingEngine, customElement, processContent, TargetInstruction} from 'aurelia-framework';
+import {noView, children, bindable, child, inject, BindingEngine, customElement, processContent, TargetInstruction} from 'aurelia-framework';
 import {ViewCompiler, ViewSlot, ViewResources, Container} from 'aurelia-framework';
 
 import {GridColumn} from './grid-column';
@@ -20,7 +20,7 @@ import * as D from './grid-source';
 	instruction.rowAttributes = result.rowAttributes;
 	instruction.pager = result.pager;
 
-	return true;
+	return false;
 })
 @inject(Element, ViewCompiler, ViewResources, Container, TargetInstruction, BindingEngine)
 export class Grid{
@@ -58,7 +58,10 @@ export class Grid{
 	@bindable sourceLoadingMessage: string = "Loading ...";
 	
 	// paginationEnabled
+	
 	pager: GridPager;
+	
+	@child('pg') pg: GridPager;
 	@bindable paginationEnabled: boolean = true;
 
 	@bindable noDataMessage: string;	
@@ -91,7 +94,9 @@ export class Grid{
 			// local
 			this.source = new D.LocalGridData(this);
 		}
-		
+	
+		debugger;
+			
 		this.builder.build();
 	}
 	
@@ -118,6 +123,15 @@ export class Grid{
 	}
 	
 	refresh(){
+		this.source.refresh();
+	}
+	
+	@bindable pageSize: number = 25;
+	pageSizeChanged(newValue: number, oldValue: number){
+		debugger;
+		if(newValue == oldValue)
+			return;
+		this.source.pageSize = newValue;
 		this.source.refresh();
 	}
 	

@@ -68,15 +68,17 @@
 					<a href="" click.delegate="last()" aria-label="Last"><span aria-hidden="true">Last</span></a>
 				</li>
 			</ul>
+
 			<div class="form-inline" if.bind="true">
-                    <div class="form-control-group">
-                        <select class="form-control" value.bind="pageSize">
-                            <option value.bind="size" repeat.for="size of pageSizes">${ size === '*' ? 'All' : size }</option>
-                        </select>
-                        <span> items per page</span>
-                    </div>
-                </div>
-                <span class="grid-summary" if.bind="pager.showPagingSummary">Showing ${pager.firstVisibleItem} - ${pager.lastVisibleItem} of ${source.count} items</span>
+				<div class="form-control-group">
+					${pager.pageSize} - ${source.pageSize} - ${pageSize}
+					<select class="form-control" value.bind="pageSize">
+						<option value.bind="size" repeat.for="size of pager.pageSizes">${ size === '*' ? 'All' : size }</option>
+					</select>
+					<span> items per page</span>
+				</div>
+			</div>
+			<span class="grid-summary" if.bind="pager.showPagingSummary">Showing ${pager.firstVisibleItem} - ${pager.lastVisibleItem} of ${source.count} items</span>
 		</div>
 		<div class="grid-footer-custom-container"></div>
 	</div>

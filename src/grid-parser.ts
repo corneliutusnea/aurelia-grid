@@ -1,6 +1,7 @@
 import {GridColumn} from './grid-column';
 import {GridRowAttributes} from './grid-row';
 import {GridPager} from './grid-pager';
+import {LogManager} from 'aurelia-framework';
 
 export interface GridTemplate {
 	columns: GridColumn[];
@@ -21,6 +22,10 @@ export class GridParser {
 	}
 	private parseGridCols(element: any): GridColumn[] {
 		var rowElement = element.querySelector("grid-row");
+		if(!rowElement){
+			LogManager.getLogger("aurelia-grid").warn("Grid has no <grid-row> defined");
+			return [];
+		}
 		var columnElements = Array.prototype.slice.call(rowElement.querySelectorAll("grid-col"));
 		var cols = [];
 
@@ -53,9 +58,14 @@ export class GridParser {
 	}
 	
 	private parseGridRow(element: any): GridRowAttributes {
-		var rowElement = element.querySelector("grid-row");
 		// Pull any row attrs into a hash object
 		var rowsAttributes = new GridRowAttributes();
+		if(!rowElement){
+			LogManager.getLogger("aurelia-grid").warn("Grid has no <grid-row> defined");
+			return rowsAttributes;
+		}
+		
+		var rowElement = element.querySelector("grid-row");
 		var attrs = Array.prototype.slice.call(rowElement.attributes);
 		attrs.forEach(a => rowsAttributes[a.name] = a.value);
 
@@ -65,6 +75,9 @@ export class GridParser {
 	private parseGridPager(element: any): GridPager {
 		var pagerElement = element.querySelector("grid-pager");
 		var pager = new GridPager();
+		if(!pagerElement){
+			return pager;
+		}
 		// fill in all properties
 		var attrs = Array.prototype.slice.call(pagerElement.attributes);
 		attrs.forEach(a => pager[this.camelCaseName(a.name)] = a.value);

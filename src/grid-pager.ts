@@ -26,6 +26,8 @@ export class GridPager {
 	@bindable firstVisibleItem: number = 0;
 	@bindable lastVisibleItem: number = 0; 
 	
+	@bindable pageSize: number = 50; 
+	
 	pages = [];
 
 	constructor() {
@@ -80,5 +82,13 @@ export class GridPager {
 	updateButtons() {
 		this.nextDisabled = this.grid.source.page === this.grid.source.pageCount;		
 		this.prevDisabled = this.grid.source.page === 1;
+	}
+	
+	pageSizeChanged(newValue: number, oldValue: number){
+		debugger;
+		if(newValue == oldValue)
+			return;
+		this.grid.source.pageSize = newValue;
+		this.grid.source.refresh();
 	}
 }
