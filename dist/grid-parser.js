@@ -1,5 +1,5 @@
-System.register(['./grid-column', './grid-row', './grid-pager'], function(exports_1) {
-    var grid_column_1, grid_row_1, grid_pager_1;
+System.register(['./grid-column', './grid-row', './grid-pager', 'aurelia-framework'], function(exports_1) {
+    var grid_column_1, grid_row_1, grid_pager_1, aurelia_framework_1;
     var GridParser;
     return {
         setters:[
@@ -11,6 +11,9 @@ System.register(['./grid-column', './grid-row', './grid-pager'], function(export
             },
             function (grid_pager_1_1) {
                 grid_pager_1 = grid_pager_1_1;
+            },
+            function (aurelia_framework_1_1) {
+                aurelia_framework_1 = aurelia_framework_1_1;
             }],
         execute: function() {
             /** Helper to do the parsing of the grid content */
@@ -28,6 +31,10 @@ System.register(['./grid-column', './grid-row', './grid-pager'], function(export
                 GridParser.prototype.parseGridCols = function (element) {
                     var _this = this;
                     var rowElement = element.querySelector("grid-row");
+                    if (!rowElement) {
+                        aurelia_framework_1.LogManager.getLogger("aurelia-grid").warn("Grid has no <grid-row> defined");
+                        return [];
+                    }
                     var columnElements = Array.prototype.slice.call(rowElement.querySelectorAll("grid-col"));
                     var cols = [];
                     var columnTemplate = '<span class="grid-column-heading">${$column.heading}</span>' +
@@ -51,9 +58,13 @@ System.register(['./grid-column', './grid-row', './grid-pager'], function(export
                     return cols;
                 };
                 GridParser.prototype.parseGridRow = function (element) {
-                    var rowElement = element.querySelector("grid-row");
                     // Pull any row attrs into a hash object
                     var rowsAttributes = new grid_row_1.GridRowAttributes();
+                    if (!rowElement) {
+                        aurelia_framework_1.LogManager.getLogger("aurelia-grid").warn("Grid has no <grid-row> defined");
+                        return rowsAttributes;
+                    }
+                    var rowElement = element.querySelector("grid-row");
                     var attrs = Array.prototype.slice.call(rowElement.attributes);
                     attrs.forEach(function (a) { return rowsAttributes[a.name] = a.value; });
                     return rowsAttributes;
@@ -62,6 +73,9 @@ System.register(['./grid-column', './grid-row', './grid-pager'], function(export
                     var _this = this;
                     var pagerElement = element.querySelector("grid-pager");
                     var pager = new grid_pager_1.GridPager();
+                    if (!pagerElement) {
+                        return pager;
+                    }
                     // fill in all properties
                     var attrs = Array.prototype.slice.call(pagerElement.attributes);
                     attrs.forEach(function (a) { return pager[_this.camelCaseName(a.name)] = a.value; });

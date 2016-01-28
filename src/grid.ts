@@ -13,14 +13,13 @@ import * as D from './grid-source';
 
 @customElement('grid')
 @processContent(function(viewCompiler, viewResources, element, instruction) {
-	// Do stuff
 	var result = processUserTemplate(element);
 	
 	instruction.columns = result.columns;
 	instruction.rowAttributes = result.rowAttributes;
 	instruction.pager = result.pager;
 
-	return false;
+	return true;
 })
 @inject(Element, ViewCompiler, ViewResources, Container, TargetInstruction, BindingEngine)
 export class Grid{
@@ -94,8 +93,6 @@ export class Grid{
 			// local
 			this.source = new D.LocalGridData(this);
 		}
-	
-		debugger;
 			
 		this.builder.build();
 	}
@@ -128,7 +125,6 @@ export class Grid{
 	
 	@bindable pageSize: number = 25;
 	pageSizeChanged(newValue: number, oldValue: number){
-		debugger;
 		if(newValue == oldValue)
 			return;
 		this.source.pageSize = newValue;

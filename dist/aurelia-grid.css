@@ -1,6 +1,83 @@
+.aurelia-grid {
+  position: relative;
+  border: 1px solid gainsboro;
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+.aurelia-grid table.grid-header-table {
+  margin-bottom: 0px;
+}
 .aurelia-grid table.grid-header-table .grid-column-sortable {
   cursor: pointer;
 }
 .aurelia-grid table.grid-header-table th.grid-column-non-sortable {
   cursor: default;
+}
+.aurelia-grid table.grid-header-table tr th {
+  border-right: 1px solid gainsboro;
+  border-left: 1px solid gainsboro;
+}
+.aurelia-grid table.grid-header-table tr th:first-child {
+  border-left: 0;
+}
+.aurelia-grid table.grid-header-table tr th:last-child {
+  border-right: 0;
+}
+.aurelia-grid .grid-content-container {
+  overflow: auto;
+  width: 100%;
+}
+.aurelia-grid .grid-content-container table {
+  margin-bottom: 0px;
+}
+.aurelia-grid .grid-content-container table tr:first-child td {
+  border-top: 0;
+}
+.aurelia-grid .grid-overlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  min-width: 100%;
+  min-height: 100%;
+  height: 100%;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.3);
+}
+.aurelia-grid .grid-progress-indicator {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 11;
+  transform: translate(-50%, -50%);
+  width: 10%;
+}
+.aurelia-grid .grid-progress-indicator .progress-bar {
+  width: 100%;
+}
+.aurelia-grid .grid-footer-container {
+  height: 46px;
+  border-top: 1px solid gainsboro;
+  padding: 8px;
+}
+.aurelia-grid .grid-footer-container > div {
+  float: left;
+  margin-left: 20px;
+}
+.aurelia-grid .grid-footer-container .pager {
+  float: left;
+  margin: 0 20px 0 0;
+}
+.aurelia-grid .grid-footer-container .pager li > span {
+  border-radius: 0px;
+}
+.aurelia-grid .grid-footer-container .pager li a {
+  border-radius: 0px;
+}
+.aurelia-grid .grid-footer-container .pager .pagination {
+  margin: 0;
+}
+.aurelia-grid .grid-footer-container .grid-summary {
+  text-align: right;
+  line-height: 34px;
+  float: right;
 }

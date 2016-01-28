@@ -41,7 +41,7 @@ export class GridDataSource implements IGridDataSource {
 	count: number;
 	items: any[];
 	loading: boolean;
-	
+
 	page: number = 1;
 	pageSize: number;
 	pageCount: number = 0;
@@ -53,11 +53,19 @@ export class GridDataSource implements IGridDataSource {
 	constructor(grid: Grid) {
 		this.grid = grid;
 	}
+	
+	/** Events from Aurelia */
+	pageSizeChanged(newValue: number, oldValue: number) {
+		debugger;
+		if(newValue == oldValue)
+			return;
+		this.refresh();
+	}
 
 	attached() {
 		this.page = 1;
 
-		if(this.grid.pager && this.grid.pager.pageSizes)
+		if (this.grid.pager && this.grid.pager.pageSizes)
 			this.pageSize = this.grid.pager.pageSizes[0];
 		else
 			this.pageSize = 10;
@@ -75,9 +83,9 @@ export class GridDataSource implements IGridDataSource {
 	updatePager() {
 		// TODO: 
 	}
-	
-	onData(){
-		if(this.pageSize == 0)
+
+	onData() {
+		if (this.pageSize == 0)
 			this.pageSize = 10;
 		this.pageCount = Math.ceil(this.count / this.pageSize);
 		this.grid.pager.refresh();
@@ -100,6 +108,8 @@ export class LocalGridData extends GridDataSource {
 			throw new Error("'data-read.call' is not defined on the grid.");
 		}
 	}
+	
+
 
 	refresh() {
 		this.loading = true;
@@ -220,16 +230,16 @@ export class LocalGridData extends GridDataSource {
 				newSort = "asc";
 				break;
 		}
-		
+
 		if (!event.ctrlKey) {
-			this.sorting.forEach(s=>s.sorting = "");
+			this.sorting.forEach(s=> s.sorting = "");
 			this.sorting = [];
 		}
 
 		column.sorting = newSort;
 
 		// If the sort is present in the sort stack, slice it to the back of the stack, otherwise just add it
- 		var pos = this.sorting.indexOf(column);
+		var pos = this.sorting.indexOf(column);
 
 		if (pos > -1)
 			this.sorting.splice(pos, 1);

@@ -44,39 +44,42 @@
 
 		<!-- Footer div -->
 		<div class="grid-footer-container" if.bind="paginationEnabled && !pager.template">
-			<ul class="pagination">
-				<li if.bind="pager.showFirstLast" class="${ pager.prevDisabled ? 'disabled' : '' }">
-					<a href="" click.delegate="first()" aria-label="First"><span aria-hidden="true">First</span></a>
-				</li>
-				<li if.bind="pager.showJump" class="${ pager.prevDisabled ? 'disabled' : '' }">
-					<a href="" click.delegate="prevJump()" aria-label="Next"><span aria-hidden="true">&#8230;</span></a>
-				</li>
-				<li class="${ pager.prevDisabled ? 'disabled' : '' }">
-					<a href="" click.delegate="prev()" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-				</li>
-				<li repeat.for="curPage of pager.pages" class="${ curPage == source.page ? 'active' : '' }">
-					<!-- This span is an IE bug fix - if a &raquo; or many other chars are used before an interpolation for some reason that interpolation fails, following ones are fine (this is for the same property). Adding an invisible span with an interpolate in it fixes the issue  -->
-					<span style="display:none">${curPage}</span>
-					<a href="" click.delegate="$parent.changePage(curPage)">${curPage}</a>
-				</li>
-				<li class="${ pager.nextDisabled ? 'disabled' : '' }">
-					<a href="" click.delegate="next()" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-				</li>
-				<li if.bind="pager.showJump" class="${ pager.nextDisabled ? 'disabled' : '' }"><a href="" click.delegate="nextJump()" aria-label="Next"><span aria-hidden="true">&#8230;</span></a>
-				</li>
-				<li if.bind="pager.showFirstLast" class="${ pager.nextDisabled ? 'disabled' : '' }">
-					<a href="" click.delegate="last()" aria-label="Last"><span aria-hidden="true">Last</span></a>
-				</li>
-			</ul>
+			<div class="pager">
+				<ul class="pagination">
+					<li if.bind="pager.showFirstLast" class="${ pager.prevDisabled ? 'disabled' : '' }">
+						<a href="" click.delegate="pager.first()" aria-label="First"><span aria-hidden="true">First</span></a>
+					</li>
+					<li if.bind="pager.showJump" class="${ pager.prevDisabled ? 'disabled' : '' }">
+						<a href="" click.delegate="pager.prevJump()" aria-label="Next"><span aria-hidden="true">&#8230;</span></a>
+					</li>
+					<li class="${ pager.prevDisabled ? 'disabled' : '' }">
+						<a href="" click.delegate="pager.prev()" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+					</li>
+					<li repeat.for="curPage of pager.pages" class="${ curPage == source.page ? 'active' : '' }">
+						<!-- This span is an IE bug fix - if a &raquo; or many other chars are used before an interpolation for some reason that interpolation fails, following ones are fine (this is for the same property). Adding an invisible span with an interpolate in it fixes the issue  -->
+						<span style="display:none">${curPage}</span>
+						<a href="" click.delegate="pager.changePage(curPage)">${curPage}</a>
+					</li>
+					<li class="${ pager.nextDisabled ? 'disabled' : '' }">
+						<a href="" click.delegate="pager.next()" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+					</li>
+					<li if.bind="pager.showJump" class="${ pager.nextDisabled ? 'disabled' : '' }"><a href="" click.delegate="pager.nextJump()" aria-label="Next"><span aria-hidden="true">&#8230;</span></a>
+					</li>
+					<li if.bind="pager.showFirstLast" class="${ pager.nextDisabled ? 'disabled' : '' }">
+						<a href="" click.delegate="pager.last()" aria-label="Last"><span aria-hidden="true">Last</span></a>
+					</li>
+				</ul>
+			</div>
+			
 			<div class="form-inline" if.bind="true">
-                    <div class="form-control-group">
-                        <select class="form-control" value.bind="pageSize">
-                            <option value.bind="size" repeat.for="size of pageSizes">${ size === '*' ? 'All' : size }</option>
-                        </select>
-                        <span> items per page</span>
-                    </div>
-                </div>
-                <span class="grid-summary" if.bind="pager.showPagingSummary">Showing ${pager.firstVisibleItem} - ${pager.lastVisibleItem} of ${source.count} items</span>
+				<div class="form-control-group">
+					<select class="form-control" value.bind="pageSize">
+						<option value.bind="size" repeat.for="size of pager.pageSizes">${ size === '*' ? 'All' : size }</option>
+					</select>
+					<span> items per page</span>
+				</div>
+			</div>
+			<span class="grid-summary" if.bind="pager.showPagingSummary">Showing ${pager.firstVisibleItem} - ${pager.lastVisibleItem} of ${source.count} items</span>
 		</div>
 		<div class="grid-footer-custom-container"></div>
 	</div>

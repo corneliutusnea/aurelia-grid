@@ -15,6 +15,13 @@ System.register([], function(exports_1) {
                     this.sorting = new Array();
                     this.grid = grid;
                 }
+                /** Events from Aurelia */
+                GridDataSource.prototype.pageSizeChanged = function (newValue, oldValue) {
+                    debugger;
+                    if (newValue == oldValue)
+                        return;
+                    this.refresh();
+                };
                 GridDataSource.prototype.attached = function () {
                     this.page = 1;
                     if (this.grid.pager && this.grid.pager.pageSizes)

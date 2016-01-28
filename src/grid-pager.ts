@@ -8,7 +8,7 @@ export class GridPager {
 	// replaced template (if defined - otherwise we use our standard template)
 	template: any;
 	grid: Grid;
-	
+
 	enabled: boolean = true;
 	
 	/** number of pages to show in the pager */
@@ -22,19 +22,19 @@ export class GridPager {
 
 	@bindable nextDisabled: boolean = false;
 	@bindable prevDisabled: boolean = false;
-	
+
 	@bindable firstVisibleItem: number = 0;
-	@bindable lastVisibleItem: number = 0; 
-	
-	@bindable pageSize: number = 50; 
-	
+	@bindable lastVisibleItem: number = 0;
+
+	@bindable pageSize: number = 50;
+
 	pages = [];
 
 	constructor() {
 	}
 
 	refresh() {
-		if(!this.grid.source)
+		if (!this.grid.source)
 			return;	// no source?
 		
 		// something changed in the data - recalculate
@@ -78,17 +78,60 @@ export class GridPager {
 
 		this.updateButtons();
 	}
-	
+
 	updateButtons() {
-		this.nextDisabled = this.grid.source.page === this.grid.source.pageCount;		
+		this.nextDisabled = this.grid.source.page === this.grid.source.pageCount;
 		this.prevDisabled = this.grid.source.page === 1;
 	}
-	
-	pageSizeChanged(newValue: number, oldValue: number){
+
+	pageSizeChanged(newValue: number, oldValue: number) {
 		debugger;
-		if(newValue == oldValue)
+		if (newValue == oldValue)
 			return;
 		this.grid.source.pageSize = newValue;
 		this.grid.source.refresh();
+	}
+
+	changePage(page: number) {
+		var oldPage = this.grid.source.page;
+
+		this.grid.source.page = this.validate(page);
+
+		if (oldPage !== this.grid.source.page) {
+			this.grid.source.refresh();
+		}
+	}
+
+	next() {
+		this.changePage(this.grid.source.page + 1);
+	}
+
+	nextJump() {
+		this.changePage(this.grid.source.page + this.numPagesToShow);
+	}
+
+	prev() {
+		this.changePage(this.grid.source.page - 1);
+	}
+
+	prevJump() {
+		this.changePage(this.grid.source.page - this.numPagesToShow);
+	}
+
+	first() {
+		this.changePage(1);
+	}
+
+	last() {
+		this.changePage(this.grid.source.pageCount);
+	}
+
+	private validate(page: number): number {
+		if (page < 1)
+			return 1;
+		if (page > this.grid.source.pageCount)
+			return this.grid.source.pageCount;
+
+		return page;
 	}
 }

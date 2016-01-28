@@ -1,4 +1,4 @@
-System.register(['aurelia-framework', './grid-selection', './grid-builder', './grid-icons', './grid-parser', './grid-source'], function(exports_1) {
+System.register(['aurelia-framework', './grid-selection', './grid-builder', './grid-icons', './grid-pager', './grid-parser', './grid-source'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['aurelia-framework', './grid-selection', './grid-builder', './g
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var aurelia_framework_1, aurelia_framework_2, grid_selection_1, grid_builder_1, grid_icons_1, grid_parser_1, D;
+    var aurelia_framework_1, aurelia_framework_2, grid_selection_1, grid_builder_1, grid_icons_1, grid_pager_1, grid_parser_1, D;
     var Grid;
     function processUserTemplate(element) {
         var parser = new grid_parser_1.GridParser();
@@ -29,6 +29,9 @@ System.register(['aurelia-framework', './grid-selection', './grid-builder', './g
             function (grid_icons_1_1) {
                 grid_icons_1 = grid_icons_1_1;
             },
+            function (grid_pager_1_1) {
+                grid_pager_1 = grid_pager_1_1;
+            },
             function (grid_parser_1_1) {
                 grid_parser_1 = grid_parser_1_1;
             },
@@ -46,6 +49,7 @@ System.register(['aurelia-framework', './grid-selection', './grid-builder', './g
                     this.sourceLoadingMessage = "Loading ...";
                     this.paginationEnabled = true;
                     this.unbinding = false;
+                    this.pageSize = 25;
                     this.element = element;
                     this.viewCompiler = vc;
                     this.viewResources = vr;
@@ -89,6 +93,12 @@ System.register(['aurelia-framework', './grid-selection', './grid-builder', './g
                     }
                 };
                 Grid.prototype.refresh = function () {
+                    this.source.refresh();
+                };
+                Grid.prototype.pageSizeChanged = function (newValue, oldValue) {
+                    if (newValue == oldValue)
+                        return;
+                    this.source.pageSize = newValue;
                     this.source.refresh();
                 };
                 Object.defineProperty(Grid.prototype, "gridContainer", {
@@ -171,6 +181,10 @@ System.register(['aurelia-framework', './grid-selection', './grid-builder', './g
                     __metadata('design:type', String)
                 ], Grid.prototype, "sourceLoadingMessage", void 0);
                 __decorate([
+                    aurelia_framework_1.child('pg'), 
+                    __metadata('design:type', grid_pager_1.GridPager)
+                ], Grid.prototype, "pg", void 0);
+                __decorate([
                     aurelia_framework_1.bindable, 
                     __metadata('design:type', Boolean)
                 ], Grid.prototype, "paginationEnabled", void 0);
@@ -178,10 +192,13 @@ System.register(['aurelia-framework', './grid-selection', './grid-builder', './g
                     aurelia_framework_1.bindable, 
                     __metadata('design:type', String)
                 ], Grid.prototype, "noDataMessage", void 0);
+                __decorate([
+                    aurelia_framework_1.bindable, 
+                    __metadata('design:type', Number)
+                ], Grid.prototype, "pageSize", void 0);
                 Grid = __decorate([
                     aurelia_framework_1.customElement('grid'),
                     aurelia_framework_1.processContent(function (viewCompiler, viewResources, element, instruction) {
-                        // Do stuff
                         var result = processUserTemplate(element);
                         instruction.columns = result.columns;
                         instruction.rowAttributes = result.rowAttributes;

@@ -30,6 +30,7 @@ System.register(['aurelia-framework'], function(exports_1) {
                     this.prevDisabled = false;
                     this.firstVisibleItem = 0;
                     this.lastVisibleItem = 0;
+                    this.pageSize = 50;
                     this.pages = [];
                 }
                 GridPager.prototype.refresh = function () {
@@ -70,6 +71,45 @@ System.register(['aurelia-framework'], function(exports_1) {
                     this.nextDisabled = this.grid.source.page === this.grid.source.pageCount;
                     this.prevDisabled = this.grid.source.page === 1;
                 };
+                GridPager.prototype.pageSizeChanged = function (newValue, oldValue) {
+                    debugger;
+                    if (newValue == oldValue)
+                        return;
+                    this.grid.source.pageSize = newValue;
+                    this.grid.source.refresh();
+                };
+                GridPager.prototype.changePage = function (page) {
+                    var oldPage = this.grid.source.page;
+                    this.grid.source.page = this.validate(page);
+                    if (oldPage !== this.grid.source.page) {
+                        this.grid.source.refresh();
+                    }
+                };
+                GridPager.prototype.next = function () {
+                    this.changePage(this.grid.source.page + 1);
+                };
+                GridPager.prototype.nextJump = function () {
+                    this.changePage(this.grid.source.page + this.numPagesToShow);
+                };
+                GridPager.prototype.prev = function () {
+                    this.changePage(this.grid.source.page - 1);
+                };
+                GridPager.prototype.prevJump = function () {
+                    this.changePage(this.grid.source.page - this.numPagesToShow);
+                };
+                GridPager.prototype.first = function () {
+                    this.changePage(1);
+                };
+                GridPager.prototype.last = function () {
+                    this.changePage(this.grid.source.pageCount);
+                };
+                GridPager.prototype.validate = function (page) {
+                    if (page < 1)
+                        return 1;
+                    if (page > this.grid.source.pageCount)
+                        return this.grid.source.pageCount;
+                    return page;
+                };
                 __decorate([
                     aurelia_framework_1.bindable, 
                     __metadata('design:type', Number)
@@ -106,6 +146,10 @@ System.register(['aurelia-framework'], function(exports_1) {
                     aurelia_framework_1.bindable, 
                     __metadata('design:type', Number)
                 ], GridPager.prototype, "lastVisibleItem", void 0);
+                __decorate([
+                    aurelia_framework_1.bindable, 
+                    __metadata('design:type', Number)
+                ], GridPager.prototype, "pageSize", void 0);
                 return GridPager;
             })();
             exports_1("GridPager", GridPager);
