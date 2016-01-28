@@ -1,4 +1,4 @@
-System.register(['aurelia-framework', './grid-selection', './grid-builder', './grid-icons', './grid-pager', './grid-parser', './grid-source'], function(exports_1) {
+System.register(['aurelia-framework', './grid-selection', './grid-builder', './grid-icons', './grid-pager', './grid-parser', './grid-source', './grid-local-source', './grid-delegate-source'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['aurelia-framework', './grid-selection', './grid-builder', './g
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var aurelia_framework_1, aurelia_framework_2, grid_selection_1, grid_builder_1, grid_icons_1, grid_pager_1, grid_parser_1, D;
+    var aurelia_framework_1, aurelia_framework_2, grid_selection_1, grid_builder_1, grid_icons_1, grid_pager_1, grid_parser_1, D, grid_local_source_1, grid_delegate_source_1;
     var Grid;
     function processUserTemplate(element) {
         var parser = new grid_parser_1.GridParser();
@@ -37,6 +37,12 @@ System.register(['aurelia-framework', './grid-selection', './grid-builder', './g
             },
             function (D_1) {
                 D = D_1;
+            },
+            function (grid_local_source_1_1) {
+                grid_local_source_1 = grid_local_source_1_1;
+            },
+            function (grid_delegate_source_1_1) {
+                grid_delegate_source_1 = grid_delegate_source_1_1;
             }],
         execute: function() {
             Grid = (function () {
@@ -47,6 +53,11 @@ System.register(['aurelia-framework', './grid-selection', './grid-builder', './g
                     this.columnsCanFilter = false;
                     this.sourceAutoLoad = true;
                     this.sourceLoadingMessage = "Loading ...";
+                    // Potential overrides (might not apply!!!) as some sources have their own definition of supports
+                    // these only really work for the delegate and remote sources
+                    this.sourceSupportsPagination = false;
+                    this.sourceSupportsSorting = false;
+                    this.sourceSupportsMultiPageSorting = false;
                     this.paginationEnabled = true;
                     this.unbinding = false;
                     this.pageSize = 25;
@@ -65,11 +76,20 @@ System.register(['aurelia-framework', './grid-selection', './grid-builder', './g
                     this["$parent"] = bindingContext;
                     // todo - make glyphicons and fa icons classes
                     this.icons = new grid_icons_1.GridIcons();
-                    if (this.sourceType == "remote") {
-                    }
-                    else {
-                        // local
-                        this.source = new D.LocalGridData(this);
+                    switch (this.sourceType) {
+                        case "remote": {
+                            // todo:
+                            throw new Error("Remote data source not supported");
+                        }
+                        case "delegate": {
+                            this.source = new grid_delegate_source_1.DelegateGridData(this);
+                            break;
+                        }
+                        default: {
+                            // local
+                            this.source = new grid_local_source_1.LocalGridData(this);
+                            break;
+                        }
                     }
                     this.builder.build();
                 };
@@ -180,6 +200,18 @@ System.register(['aurelia-framework', './grid-selection', './grid-builder', './g
                     aurelia_framework_1.bindable, 
                     __metadata('design:type', String)
                 ], Grid.prototype, "sourceLoadingMessage", void 0);
+                __decorate([
+                    aurelia_framework_1.bindable, 
+                    __metadata('design:type', Boolean)
+                ], Grid.prototype, "sourceSupportsPagination", void 0);
+                __decorate([
+                    aurelia_framework_1.bindable, 
+                    __metadata('design:type', Boolean)
+                ], Grid.prototype, "sourceSupportsSorting", void 0);
+                __decorate([
+                    aurelia_framework_1.bindable, 
+                    __metadata('design:type', Boolean)
+                ], Grid.prototype, "sourceSupportsMultiPageSorting", void 0);
                 __decorate([
                     aurelia_framework_1.child('pg'), 
                     __metadata('design:type', grid_pager_1.GridPager)

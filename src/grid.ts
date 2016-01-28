@@ -10,6 +10,8 @@ import {GridPager} from './grid-pager';
 
 import {GridTemplate, GridParser} from './grid-parser';
 import * as D from './grid-source';
+import {LocalGridData} from './grid-local-source';
+import {DelegateGridData} from './grid-delegate-source';
 
 @customElement('grid')
 @processContent(function(viewCompiler, viewResources, element, instruction) {
@@ -56,7 +58,11 @@ export class Grid{
 	@bindable sourceReadError: (result: any) => void;
 	@bindable sourceLoadingMessage: string = "Loading ...";
 	
-	// paginationEnabled
+	// Potential overrides (might not apply!!!) as some sources have their own definition of supports
+	// these only really work for the delegate and remote sources
+	@bindable sourceSupportsPagination: boolean = false;
+	@bindable sourceSupportsSorting: boolean = false;
+	@bindable sourceSupportsMultiPageSorting: boolean = false;
 	
 	pager: GridPager;
 	
@@ -87,13 +93,23 @@ export class Grid{
 		// todo - make glyphicons and fa icons classes
 		this.icons = new GridIcons();
 		
-		if(this.sourceType == "remote"){
-			// todo
-		} else{
-			// local
-			this.source = new D.LocalGridData(this);
+		switch(this.sourceType)
+		{
+			case "remote":{
+				// todo:
+				throw new Error("Remote data source not supported");
+			}
+			case "delegate":{
+				this.source = new DelegateGridData(this);
+				break;
+			}
+			default:{
+				// local
+				this.source = new LocalGridData(this);
+				break;
+			}
 		}
-			
+		
 		this.builder.build();
 	}
 	
