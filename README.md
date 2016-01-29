@@ -5,6 +5,21 @@ A fresh Aurelia Grid written in TypeScript based [charlespockert's Aurelia BS Gr
 This is a very early port of [charlespockert's Aurelia BS Grid](https://github.com/charlespockert/aurelia-bs-grid) to TypeScript.
 This is very early proof of concept but seems to be working.
 
+* [Using the grid](#using-the-grid)
+* [Template](#the-template)
+	* [grid-row](#grid-row)
+	* [grid-col](#grid-col)
+		* [column header template](grid-column---header-templates)
+		* [cell templates](#grid-column---row-templates)
+	* [pager](#grid-pager)
+		* [pager customization](docs/pager.md)
+* [Data Sources](#grid-data-source)
+	* [Local Data Source](docs/datasource.md#local-data-source)
+	* [Delegated Data Source](docs/datasource.md#delegated-data-source)
+* [Grid Selection](#grid-selection)
+* [Grid Methods](#grid-methods)
+
+
 # Using the grid
 1. Install the plugin into your project using jspm
   ```
