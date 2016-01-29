@@ -2,9 +2,22 @@
 A fresh Aurelia Grid written in TypeScript based [charlespockert's Aurelia BS Grid](https://github.com/charlespockert/aurelia-bs-grid).
 
 # Intro
-This is a very early port of [charlespockert's Aurelia BS Grid](https://github.com/charlespockert/aurelia-bs-grid) to TypeScript.
-This is very early proof of concept but seems to be working.
+This is an early build of an Aurelia Grid based on an original implementation by [charlespockert's Aurelia BS Grid](https://github.com/charlespockert/aurelia-bs-grid).
 
+Features:
+* Column Header Templates
+* Row Cell Templates
+* Pagination
+* Single column and Multi Column Sorting
+* Local Data Source and Delegated data source
+* Pager with custom Pager Templates
+
+Upcoming Features:
+* Remote Data Source
+* Multi-Select
+* Column Filters 
+
+# Documentation
 * [Using the grid](#using-the-grid)
 * [Template](#the-template)
 	* [grid-row](#grid-row)
