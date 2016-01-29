@@ -6,7 +6,7 @@
 		
         <!-- Grid definition -->
         <grid grid-height.bind="auto" source-read.call="getLocalData($event)" selected-item.two-way="selected" test.two-way="test" >
-            <grid-row>
+            <grid-row class="my-custom-row" other-attribute="true">
                 <grid-col can-sort="true" heading="Id" field="id" class="col-xs-1">${$item.id}</grid-col>
                 <grid-col can-sort="true" heading="Name" field="name" class="col-xs-11" can-filter="false">${ $item.name }</grid-col>
             </grid-row>

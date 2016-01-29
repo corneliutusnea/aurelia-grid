@@ -19,22 +19,40 @@ System.register(['./grid-source'], function(exports_1) {
                     _super.call(this, grid);
                     this.supportsPagination = this.grid.sourceSupportsPagination;
                     this.supportsSorting = this.grid.sourceSupportsSorting;
-                    this.supportsMultiPageSorting = this.grid.sourceSupportsMultiPageSorting;
+                    this.supportsMultiColumnSorting = this.grid.sourceSupportsMultiColumnSorting;
                 }
                 DelegateGridData.prototype.refresh = function () {
                     var _this = this;
                     this.loading = true;
+                    var sort = this.sorting.map(function (s) {
+                        return { field: s.field, sorting: s.sorting };
+                    });
                     var d = this.dataRead({
                         page: this.page,
-                        pageSize: this.pageSize
-                    }).then(function (result) {
-                        _this.handleResult(result);
-                        _this.loading = false;
-                    }).catch(function (error) {
-                        if (_this.grid.sourceReadError)
-                            _this.grid.sourceReadError(error);
-                        _this.loading = false;
+                        pageSize: this.pageSize,
+                        sort: sort
                     });
+                    if (d.then) {
+                        d.then(function (result) {
+                            _this.handleResult(result);
+                            _this.loading = false;
+                        }).catch(function (error) {
+                            if (_this.grid.sourceReadError)
+                                _this.grid.sourceReadError(error);
+                            _this.loading = false;
+                        });
+                    }
+                    else {
+                        if (Array.isArray(d)) {
+                            this.handleResult(d, true);
+                            this.loading = false;
+                        }
+                        else {
+                            this.handleResult(d, false);
+                            this.loading = false;
+                        }
+                    }
+                    ;
                 };
                 DelegateGridData.prototype.handleResult = function (result, isArray) {
                     if (isArray === void 0) { isArray = false; }

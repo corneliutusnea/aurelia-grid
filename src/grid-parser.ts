@@ -60,12 +60,13 @@ export class GridParser {
 	private parseGridRow(element: any): GridRowAttributes {
 		// Pull any row attrs into a hash object
 		var rowsAttributes = new GridRowAttributes();
+
+		var rowElement = element.querySelector("grid-row");
 		if(!rowElement){
 			LogManager.getLogger("aurelia-grid").warn("Grid has no <grid-row> defined");
 			return rowsAttributes;
 		}
 		
-		var rowElement = element.querySelector("grid-row");
 		var attrs = Array.prototype.slice.call(rowElement.attributes);
 		attrs.forEach(a => rowsAttributes[a.name] = a.value);
 

@@ -44,6 +44,10 @@ System.register(['./grid-source'], function(exports_1) {
                             this.handleResult(d, true);
                             this.loading = false;
                         }
+                        else {
+                            this.handleResult(d, false);
+                            this.loading = false;
+                        }
                     }
                     ;
                 };

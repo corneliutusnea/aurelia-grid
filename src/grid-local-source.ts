@@ -24,6 +24,7 @@ export class LocalGridData extends GridDataSource {
 	refresh() {
 		this.loading = true;
 		var d = this.dataRead(null);
+        
 		if (d.then) {
 			d.then(result=> {
 				this.handleResult(result);
@@ -32,12 +33,15 @@ export class LocalGridData extends GridDataSource {
 				if (this.grid.sourceReadError)
 					this.grid.sourceReadError(error);
 				this.loading = false;
-			})
+			});
 		} else {
 			if (Array.isArray(d)) {
 				this.handleResult(d, true);
 				this.loading = false;
-			}
+			} else {
+                this.handleResult(d, false);
+                this.loading = false;
+            }
 		};
 	}
 

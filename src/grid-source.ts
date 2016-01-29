@@ -4,7 +4,7 @@ import {GridColumn} from './grid-column';
 export interface IGridDataSource {
 	supportsPagination: boolean;
 	supportsSorting: boolean;
-	supportsMultiPageSorting: boolean;
+	supportsMultiColumnSorting: boolean;
 		
 	count: number;
 	items: any[];
@@ -42,12 +42,19 @@ export interface IDataInfo {
 	page: number;
 	/** 10 - default page size */
 	pageSize: number;
+    /** sort information */
+    sort: IDataSortInfo[];
+}
+
+export interface IDataSortInfo{
+    field: string;
+    sorting: string;    // asc|desc
 }
 
 export class GridDataSource implements IGridDataSource {
 	supportsPagination: boolean = false;
 	supportsSorting: boolean = false;
-	supportsMultiPageSorting: boolean = false;
+	supportsMultiColumnSorting: boolean = false;
 	
 	count: number;
 	items: any[];
@@ -124,7 +131,7 @@ export class GridDataSource implements IGridDataSource {
 				break;
 		}
 
-		if (!event.ctrlKey || !this.supportsMultiPageSorting) {
+		if (!event.ctrlKey || !this.supportsMultiColumnSorting) {
 			this.sorting.forEach(s=> s.sorting = "");
 			this.sorting = [];
 		}

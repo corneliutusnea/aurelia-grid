@@ -62,7 +62,7 @@ export class Grid{
 	// these only really work for the delegate and remote sources
 	@bindable sourceSupportsPagination: boolean = false;
 	@bindable sourceSupportsSorting: boolean = false;
-	@bindable sourceSupportsMultiPageSorting: boolean = false;
+	@bindable sourceSupportsMultiColumnSorting: boolean = false;
 	
 	pager: GridPager;
 	

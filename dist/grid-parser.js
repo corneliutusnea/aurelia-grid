@@ -60,11 +60,11 @@ System.register(['./grid-column', './grid-row', './grid-pager', 'aurelia-framewo
                 GridParser.prototype.parseGridRow = function (element) {
                     // Pull any row attrs into a hash object
                     var rowsAttributes = new grid_row_1.GridRowAttributes();
+                    var rowElement = element.querySelector("grid-row");
                     if (!rowElement) {
                         aurelia_framework_1.LogManager.getLogger("aurelia-grid").warn("Grid has no <grid-row> defined");
                         return rowsAttributes;
                     }
-                    var rowElement = element.querySelector("grid-row");
                     var attrs = Array.prototype.slice.call(rowElement.attributes);
                     attrs.forEach(function (a) { return rowsAttributes[a.name] = a.value; });
                     return rowsAttributes;

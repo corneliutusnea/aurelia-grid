@@ -7,7 +7,7 @@ System.register([], function(exports_1) {
                 function GridDataSource(grid) {
                     this.supportsPagination = false;
                     this.supportsSorting = false;
-                    this.supportsMultiPageSorting = false;
+                    this.supportsMultiColumnSorting = false;
                     this.page = 1;
                     this.pageCount = 0;
                     this.sorting = new Array();
@@ -62,7 +62,7 @@ System.register([], function(exports_1) {
                             newSort = "asc";
                             break;
                     }
-                    if (!event.ctrlKey || !this.supportsMultiPageSorting) {
+                    if (!event.ctrlKey || !this.supportsMultiColumnSorting) {
                         this.sorting.forEach(function (s) { return s.sorting = ""; });
                         this.sorting = [];
                     }

@@ -57,7 +57,7 @@ System.register(['aurelia-framework', './grid-selection', './grid-builder', './g
                     // these only really work for the delegate and remote sources
                     this.sourceSupportsPagination = false;
                     this.sourceSupportsSorting = false;
-                    this.sourceSupportsMultiPageSorting = false;
+                    this.sourceSupportsMultiColumnSorting = false;
                     this.paginationEnabled = true;
                     this.unbinding = false;
                     this.pageSize = 25;
@@ -211,7 +211,7 @@ System.register(['aurelia-framework', './grid-selection', './grid-builder', './g
                 __decorate([
                     aurelia_framework_1.bindable, 
                     __metadata('design:type', Boolean)
-                ], Grid.prototype, "sourceSupportsMultiPageSorting", void 0);
+                ], Grid.prototype, "sourceSupportsMultiColumnSorting", void 0);
                 __decorate([
                     aurelia_framework_1.child('pg'), 
                     __metadata('design:type', grid_pager_1.GridPager)
