@@ -9,6 +9,10 @@ export class DelegateGridData extends GridDataSource {
 
 	constructor(grid: Grid) {
 		super(grid);
+		this.dataRead = grid.sourceRead;
+		if (!this.dataRead) {
+			throw new Error("'data-read.call' is not defined on the grid.");
+		}
 		
 		this.supportsPagination = this.grid.sourceSupportsPagination;
 		this.supportsSorting = this.grid.sourceSupportsSorting;

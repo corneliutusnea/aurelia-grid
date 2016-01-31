@@ -100,8 +100,11 @@ System.register(['aurelia-framework', './grid-selection', './grid-builder', './g
                 };
                 Grid.prototype.attached = function () {
                     this.gridHeightChanged();
-                    this.source.attached();
                     this.pager.refresh();
+                    // fix pageSize
+                    this.pageSize = this.pager.pageSizes[0];
+                    this.source.pageSize = this.pageSize;
+                    this.source.attached();
                 };
                 /* ==== Visual Handling ===== */
                 Grid.prototype.gridHeightChanged = function () {
@@ -116,7 +119,7 @@ System.register(['aurelia-framework', './grid-selection', './grid-builder', './g
                     this.source.refresh();
                 };
                 Grid.prototype.pageSizeChanged = function (newValue, oldValue) {
-                    if (newValue == oldValue)
+                    if (this.source.pageSize == this.pageSize)
                         return;
                     this.source.pageSize = newValue;
                     this.source.refresh();

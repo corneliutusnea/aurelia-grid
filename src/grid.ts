@@ -121,8 +121,13 @@ export class Grid{
 	
 	attached(){
 		this.gridHeightChanged();
-		this.source.attached();
 		this.pager.refresh();
+		
+		// fix pageSize
+		this.pageSize = this.pager.pageSizes[0];
+		this.source.pageSize = this.pageSize;
+		
+		this.source.attached();
 	}
 	
 	
@@ -141,7 +146,7 @@ export class Grid{
 	
 	@bindable pageSize: number = 25;
 	pageSizeChanged(newValue: number, oldValue: number){
-		if(newValue == oldValue)
+		if(this.source.pageSize == this.pageSize)
 			return;
 		this.source.pageSize = newValue;
 		this.source.refresh();

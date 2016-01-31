@@ -17,6 +17,10 @@ System.register(['./grid-source'], function(exports_1) {
                 __extends(DelegateGridData, _super);
                 function DelegateGridData(grid) {
                     _super.call(this, grid);
+                    this.dataRead = grid.sourceRead;
+                    if (!this.dataRead) {
+                        throw new Error("'data-read.call' is not defined on the grid.");
+                    }
                     this.supportsPagination = this.grid.sourceSupportsPagination;
                     this.supportsSorting = this.grid.sourceSupportsSorting;
                     this.supportsMultiColumnSorting = this.grid.sourceSupportsMultiColumnSorting;
