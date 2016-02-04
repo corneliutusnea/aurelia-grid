@@ -66,11 +66,6 @@ export class Grid{
 	
 	pager: GridPager;
 	
-	@child('pg') pg: GridPager;
-	@bindable paginationEnabled: boolean = true;
-
-	@bindable noDataMessage: string;	
-		
 	constructor(element, vc: ViewCompiler, vr: ViewResources, container: Container, targetInstruction: TargetInstruction, bindingEngine: BindingEngine) {
 		this.element = element;
 		this.viewCompiler = vc;

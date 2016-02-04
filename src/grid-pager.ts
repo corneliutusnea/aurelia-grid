@@ -25,9 +25,11 @@ export class GridPager {
 
 	@bindable firstVisibleItem: number = 0;
 	@bindable lastVisibleItem: number = 0;
+	
+	@bindable autoHide: boolean = true;
 
 	pages = [];
-
+	
 	constructor() {
 	}
 

@@ -84,8 +84,7 @@ System.register(['./grid-source'], function(exports_1) {
                     if (this.grid.columnsCanSort)
                         tempData = this.applySort(tempData);
                     // 3. Now apply paging
-                    if (this.grid.paginationEnabled)
-                        tempData = this.applyPage(tempData);
+                    tempData = this.applyPage(tempData);
                     this.items = tempData;
                     this.updatePager();
                     this.watchForChanges();

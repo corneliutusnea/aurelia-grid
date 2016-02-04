@@ -43,7 +43,7 @@
 		</div>
 
 		<!-- Footer div -->
-		<div class="grid-footer-container" if.bind="paginationEnabled && !pager.template">
+		<div class="grid-footer-container" if.bind="(!pager.autoHide || source.pageCount > 1) && !pager.template">
 			<div class="pager">
 				<ul class="pagination">
 					<li if.bind="pager.showFirstLast" class="${ pager.prevDisabled ? 'disabled' : '' }">

@@ -30,6 +30,7 @@ System.register(['aurelia-framework'], function(exports_1) {
                     this.prevDisabled = false;
                     this.firstVisibleItem = 0;
                     this.lastVisibleItem = 0;
+                    this.autoHide = true;
                     this.pages = [];
                 }
                 GridPager.prototype.refresh = function () {
@@ -145,6 +146,10 @@ System.register(['aurelia-framework'], function(exports_1) {
                     aurelia_framework_1.bindable, 
                     __metadata('design:type', Number)
                 ], GridPager.prototype, "lastVisibleItem", void 0);
+                __decorate([
+                    aurelia_framework_1.bindable, 
+                    __metadata('design:type', Boolean)
+                ], GridPager.prototype, "autoHide", void 0);
                 return GridPager;
             })();
             exports_1("GridPager", GridPager);
