@@ -41,7 +41,6 @@ System.register([], function(exports_1) {
                 };
                 /** Events from Aurelia */
                 GridDataSource.prototype.pageSizeChanged = function (newValue, oldValue) {
-                    debugger;
                     if (newValue == oldValue)
                         return;
                     this.refresh();

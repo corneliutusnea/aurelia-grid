@@ -137,7 +137,6 @@ System.register(['aurelia-framework'], function(exports_1) {
                     //this.dontWatchForChanges();
                 };
                 GridBuilder.prototype.headersSyncColumnHeadersWithColumns = function () {
-                    debugger;
                     // Get the first row from the data if there is one...
                     var cells = this.element.querySelectorAll("table>tbody>tr:first-child>td");
                     for (var i = this.grid.gridHeaders.length - 1; i >= 0; i--) {

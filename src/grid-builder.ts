@@ -165,7 +165,7 @@ export class GridBuilder {
 		var templateValue = document.createElement('div');
 		template.appendChild(templateValue);
 		templateValue.innerHTML = this.grid.pager.template;
-		
+
 		var view = this.viewCompiler.compile(template, this.viewResources).create(this.container);
 		var bindingContext = {
 			// I'm having problem if I try to use $parent. The template never seems to see that
@@ -178,15 +178,14 @@ export class GridBuilder {
 		this.pagerViewSlot.add(view);
 		this.pagerViewSlot.attached();
 	}
-	
+
 	private resizeListener: any;
 	unbind(){
 		window.removeEventListener('resize', this.resizeListener);
 		//this.dontWatchForChanges();
 	}
-	
+
 	headersSyncColumnHeadersWithColumns() {
-		debugger;
 		// Get the first row from the data if there is one...
 		var cells = this.element.querySelectorAll("table>tbody>tr:first-child>td");
 

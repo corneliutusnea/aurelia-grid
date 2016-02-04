@@ -66,7 +66,7 @@ export class Grid{
 	
 	pager: GridPager;
 	
-	constructor(element, vc: ViewCompiler, vr: ViewResources, container: Container, targetInstruction: TargetInstruction, bindingEngine: BindingEngine) {
+	constructor(element: Element, vc: ViewCompiler, vr: ViewResources, container: Container, targetInstruction: TargetInstruction, bindingEngine: BindingEngine) {
 		this.element = element;
 		this.viewCompiler = vc;
 		this.viewResources = vr;
