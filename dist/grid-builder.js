@@ -1,4 +1,6 @@
-System.register(['aurelia-framework'], function(exports_1) {
+System.register(['aurelia-framework'], function(exports_1, context_1) {
+    "use strict";
+    var __moduleName = context_1 && context_1.id;
     var aurelia_framework_1;
     var GridBuilder;
     return {
@@ -159,7 +161,7 @@ System.register(['aurelia-framework'], function(exports_1) {
                     return container.offsetHeight < container.scrollHeight || container.offsetWidth < container.scrollWidth;
                 };
                 return GridBuilder;
-            })();
+            }());
             exports_1("GridBuilder", GridBuilder);
         }
     }

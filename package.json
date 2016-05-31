@@ -1,45 +1,48 @@
 {
-	"name": "aurelia-grid",
-	"version": "0.0.1",
-	"description": "An Aurelia Grid",
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/corneliutusnea/aurelia-grid.git"
-	},
-	"keywords": [
-		"aurelia"
-	],
-	"author": "Corneliu I. Tusnea <corneliu@acorns.com.au>",
-	"directories": {
-		"lib": "dist"
-	},
-	"license": "MIT",
-	"bugs": {
-		"url": "https://github.com/corneliutusnea/aurelia-grid/issues"
-	},
-	"homepage": "https://github.com/corneliutusnea/aurelia-grid#readme",
-	"devDependencies": {
-		"browser-sync": "^2.11.1",
-		"del": "^2.2.0",
-		"gulp": "^3.9.0",
-		"gulp-changed": "^1.3.0",
-		"gulp-less": "^3.0.5",
-		"gulp-plumber": "^1.0.1",
-		"gulp-typescript": "^2.10.0",
-		"jspm": "^0.16.11",
-		"require-dir": "^0.3.0",
-		"run-sequence": "^1.1.5",
-		"typescript": "^1.7.5",
-		"vinyl-paths": "^2.1.0"
-	},
-	"jspm": {
-		"directories": {
-			"lib": "dist"
-		},
-		"dependencies": {
-			"aurelia-framework": "npm:aurelia-framework@^1.0.0-beta.1.0.8",
-			"core-js": "npm:core-js@^2.0.3"
-		},
-		"devDependencies": {}
-	}
+  "name": "aurelia-grid",
+  "version": "0.0.1",
+  "description": "An Aurelia Grid",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/corneliutusnea/aurelia-grid.git"
+  },
+  "keywords": [
+    "aurelia"
+  ],
+  "author": "Corneliu I. Tusnea <corneliu@acorns.com.au>",
+  "directories": {
+    "lib": "dist"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/corneliutusnea/aurelia-grid/issues"
+  },
+  "homepage": "https://github.com/corneliutusnea/aurelia-grid#readme",
+  "devDependencies": {
+    "browser-sync": "^2.11.1",
+    "del": "^2.2.0",
+    "gulp": "^3.9.0",
+    "gulp-changed": "^1.3.0",
+    "gulp-less": "^3.0.5",
+    "gulp-plumber": "^1.0.1",
+    "gulp-typescript": "^2.10.0",
+    "jspm": "0.16.15",
+    "require-dir": "^0.3.0",
+    "run-sequence": "^1.1.5",
+    "typescript": "^1.7.5",
+    "vinyl-paths": "^2.1.0"
+  },
+  "jspm": {
+    "directories": {
+      "lib": "dist"
+    },
+    "dependencies": {
+      "aurelia-framework": "npm:aurelia-framework@^1.0.0-beta.1.2.5"
+    },
+    "devDependencies": {
+      "babel": "npm:babel-core@^5.8.24",
+      "babel-runtime": "npm:babel-runtime@^5.8.24",
+      "core-js": "npm:core-js@^1.1.4"
+    }
+  }
 }

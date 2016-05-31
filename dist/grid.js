@@ -1,4 +1,6 @@
-System.register(['aurelia-framework', './grid-selection', './grid-builder', './grid-icons', './grid-parser', './grid-source', './grid-local-source', './grid-delegate-source'], function(exports_1) {
+System.register(['aurelia-framework', './grid-selection', './grid-builder', './grid-icons', './grid-parser', './grid-source', './grid-local-source', './grid-delegate-source'], function(exports_1, context_1) {
+    "use strict";
+    var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -228,7 +230,7 @@ System.register(['aurelia-framework', './grid-selection', './grid-builder', './g
                     __metadata('design:paramtypes', [Element, aurelia_framework_2.ViewCompiler, aurelia_framework_2.ViewResources, aurelia_framework_2.Container, aurelia_framework_1.TargetInstruction, aurelia_framework_1.BindingEngine])
                 ], Grid);
                 return Grid;
-            })();
+            }());
             exports_1("Grid", Grid);
         }
     }

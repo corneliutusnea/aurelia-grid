@@ -1,4 +1,6 @@
-System.register(['./grid-column', './grid-row', './grid-pager', 'aurelia-framework'], function(exports_1) {
+System.register(['./grid-column', './grid-row', './grid-pager', 'aurelia-framework'], function(exports_1, context_1) {
+    "use strict";
+    var __moduleName = context_1 && context_1.id;
     var grid_column_1, grid_row_1, grid_pager_1, aurelia_framework_1;
     var GridParser;
     return {
@@ -104,7 +106,7 @@ System.register(['./grid-column', './grid-row', './grid-pager', 'aurelia-framewo
                     }
                 };
                 return GridParser;
-            })();
+            }());
             exports_1("GridParser", GridParser);
         }
     }
