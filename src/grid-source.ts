@@ -107,7 +107,6 @@ export class GridDataSource implements IGridDataSource {
 	
 	/** Events from Aurelia */
 	pageSizeChanged(newValue: number, oldValue: number) {
-		debugger;
 		if(newValue == oldValue)
 			return;
 		this.refresh();

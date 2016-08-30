@@ -9,5 +9,6 @@ export class GridSelection{
 	select(item: any, event){
 		// TODO: if multi-selection check event for shift pressed
 		this.grid.selectedItem = item;
+		return true;
 	}
 }

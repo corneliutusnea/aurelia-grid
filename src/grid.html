@@ -1,5 +1,5 @@
 <template>
-	<require from="./aurelia-grid.css!"></require>
+	<!--<require from="./aurelia-grid.css!"></require>-->
 	<div class="aurelia-grid grid-container">
 		<table class="table table-hover table-striped table-responsive grid-header-table">
 			<thead>
@@ -43,7 +43,7 @@
 		</div>
 
 		<!-- Footer div -->
-		<div class="grid-footer-container" if.bind="paginationEnabled && !pager.template">
+		<div class="grid-footer-container" if.bind="(!pager.autoHide || source.pageCount > 1) && !pager.template">
 			<div class="pager">
 				<ul class="pagination">
 					<li if.bind="pager.showFirstLast" class="${ pager.prevDisabled ? 'disabled' : '' }">

@@ -81,8 +81,7 @@ export class LocalGridData extends GridDataSource {
 			tempData = this.applySort(tempData);
 
 		// 3. Now apply paging
-		if (this.grid.paginationEnabled)
-			tempData = this.applyPage(tempData);
+		tempData = this.applyPage(tempData);
 
 		this.items = tempData;
 

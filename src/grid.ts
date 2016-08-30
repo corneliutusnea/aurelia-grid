@@ -1,6 +1,8 @@
 import {noView, children, bindable, child, inject, BindingEngine, customElement, processContent, TargetInstruction} from 'aurelia-framework';
 import {ViewCompiler, ViewSlot, ViewResources, Container} from 'aurelia-framework';
 
+import './aurelia-grid.css';
+
 import {GridColumn} from './grid-column';
 import {GridRowAttributes} from './grid-row';
 import {GridSelection} from './grid-selection';
@@ -66,12 +68,7 @@ export class Grid{
 	
 	pager: GridPager;
 	
-	@child('pg') pg: GridPager;
-	@bindable paginationEnabled: boolean = true;
-
-	@bindable noDataMessage: string;	
-		
-	constructor(element, vc: ViewCompiler, vr: ViewResources, container: Container, targetInstruction: TargetInstruction, bindingEngine: BindingEngine) {
+	constructor(element: Element, vc: ViewCompiler, vr: ViewResources, container: Container, targetInstruction: TargetInstruction, bindingEngine: BindingEngine) {
 		this.element = element;
 		this.viewCompiler = vc;
 		this.viewResources = vr;

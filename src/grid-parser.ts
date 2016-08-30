@@ -40,7 +40,7 @@ export class GridParser {
 			var col = new GridColumn();
 
 			var attrs = Array.prototype.slice.call(c.attributes);
-			attrs.forEach(a => col[this.camelCaseName(a.name)] = a.value);
+			attrs.forEach(a => this.tryAssign(col, this.camelCaseName(a.name), a.value));
 
 			// check for inner <heading> of template
 			var headingTemplate = c.querySelector("heading");
@@ -81,7 +81,10 @@ export class GridParser {
 		}
 		// fill in all properties
 		var attrs = Array.prototype.slice.call(pagerElement.attributes);
-		attrs.forEach(a => pager[this.camelCaseName(a.name)] = a.value);
+		attrs.forEach(a =>
+		{ 
+			this.tryAssign(pager, this.camelCaseName(a.name), a.value);
+		});
 		
 		var template = pagerElement.querySelector("template");
 		pager.template = (template && template.innerHTML) ? template.innerHTML : null;
@@ -92,4 +95,19 @@ export class GridParser {
 	private camelCaseName(name: string): string {
 		return name.replace(/-([a-z])/g, function(g) { return g[1].toUpperCase(); });
 	};
+	
+	private tryAssign(target: any, name: string, value: string){
+		var existing = target[name];
+		switch(typeof existing){
+			case 'boolean':
+				target[name] = (value == 'true');
+				break;
+			case 'number':
+				target[name] = parseInt(value);
+				break;
+			default:
+				target[name] = value;
+				break;
+		}
+	}
 }

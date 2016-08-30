@@ -186,7 +186,6 @@ export class GridBuilder {
 	}
 	
 	headersSyncColumnHeadersWithColumns() {
-		debugger;
 		// Get the first row from the data if there is one...
 		var cells = this.element.querySelectorAll("table>tbody>tr:first-child>td");
 
@@ -207,7 +206,7 @@ export class GridBuilder {
 	}
 	
 	isBodyOverflowing(): boolean {
-		var container = this.grid.gridContainer();;
+		var container = this.grid.gridContainer;
 		return container.offsetHeight < container.scrollHeight || container.offsetWidth < container.scrollWidth;
 	}
 }

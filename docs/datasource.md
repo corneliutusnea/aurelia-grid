@@ -77,7 +77,7 @@ You also have to set the `source-read.call="myLocalData(info)"` to the method re
 
 ** Grid Options ** 
 * `source-type="delegate"` - configures the source of the data to be delegated.
-* `source-read.call="myLocalFunction(into)"` - The method that returns a promise to resolve the data for the grid.
+* `source-read.call="myLocalFunction($event)"` - The method that returns a promise to resolve the data for the grid.
 The returned data can be either directly an array, structured data in format `{ data: [], count: number }` or any other structured data that
 can be transformed to the `{ data: [], count: number }` by a `source-transform` method (see below).
 The `info` parameter contains the details of the request that you need to fulfil: `{page: number, pageSize: number, sort: [ { field: string, sorting: string }, ... ]}`
