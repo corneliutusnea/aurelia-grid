@@ -2,26 +2,29 @@ import {ViewSlot, View} from 'aurelia-framework';
 
 /** All Attributes on <grid-col  */
 export class GridColumn{
-	heading: string;
-	field: string;
-	class: string;
-	headerClass: string;
+	heading: string = "";
+	field: string = "";
+	class: string = "";
+	headerClass: string = "";
 	
-	canSort: boolean;
+	canSort: boolean = false;
 	
-	canFilter: boolean;
-	filterPlaceholder: string;
+	canFilter: boolean = false;
+	filterPlaceholder: string = "";
 	
 	/** Value for filtering */
-	filterValue: string;
+	filterValue: string = "";
 	
+	/** Cell template for rows tbody > tr */
+	template: any;
+
 	/** Full HTML template for the heading - either read from <heading>...</heading> or build from the heading attribute */
 	headingTemplate: any;
-	
-	/** Cell template for rows */
-	template: any;
-	
-	sorting: string;	// asc|desc
+
+	/** Full HTML template for footers (tfoot) */
+	footerTemplate: any;
+		
+	sorting: string = "";	// asc|desc
 	
 	// internal use
 	slot: ViewSlot;

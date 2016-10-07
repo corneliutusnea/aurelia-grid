@@ -1,14 +1,23 @@
 .aurelia-grid {
   position: relative;
   border: 1px solid gainsboro;
-  margin-bottom: 20px;
   border-radius: 5px;
 }
 .aurelia-grid table.grid-header-table {
   margin-bottom: 0px;
 }
-.aurelia-grid table.grid-header-table .grid-column-sortable {
+.aurelia-grid table.grid-header-table th {
+  padding: 0;
+  vertical-align: top;
+}
+.aurelia-grid table.grid-header-table div.grid-column-header {
+  margin: 8px;
+}
+.aurelia-grid table.grid-header-table th.grid-column-sortable div.grid-column-header {
   cursor: pointer;
+}
+.aurelia-grid table.grid-header-table .grid-column-heading {
+  margin-right: 3px;
 }
 .aurelia-grid table.grid-header-table th.grid-column-non-sortable {
   cursor: default;
@@ -24,11 +33,14 @@
   border-right: 0;
 }
 .aurelia-grid .grid-content-container {
-  overflow: auto;
+  overflow: visible;
   width: 100%;
 }
 .aurelia-grid .grid-content-container table {
   margin-bottom: 0px;
+}
+.aurelia-grid .grid-content-container table td {
+  vertical-align: middle;
 }
 .aurelia-grid .grid-content-container table tr:first-child td {
   border-top: 0;
@@ -66,6 +78,9 @@
 .aurelia-grid .grid-footer-container .pager {
   float: left;
   margin: 0 20px 0 0;
+}
+.aurelia-grid .grid-footer-container .pager .mar-right {
+  margin-right: 15px;
 }
 .aurelia-grid .grid-footer-container .pager li > span {
   border-radius: 0px;

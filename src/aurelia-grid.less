@@ -1,12 +1,23 @@
 .aurelia-grid{
 	position: relative;
 	border: 1px solid gainsboro;
-	margin-bottom: 20px;
+	//margin-bottom: 20px;
 	border-radius: 5px;
 	
 	table.grid-header-table{
-		.grid-column-sortable{
+		th{
+			// we remove the padding from here and add it to the internal div
+			padding: 0;
+			vertical-align: top;
+		}
+		div.grid-column-header{
+			margin: 8px;
+		}
+		th.grid-column-sortable div.grid-column-header{
 			cursor: pointer;
+		}
+		.grid-column-heading{
+			margin-right: 3px;
 		}
 		th.grid-column-non-sortable{
 			cursor: default;
@@ -29,9 +40,13 @@
 	}
 	
 	.grid-content-container{
-		overflow: auto;
+		overflow: visible;
 		width: 100%;
 		table{
+			td{
+				vertical-align: middle;
+			}
+			
 			tr{
 				&:first-child{
 					td{
@@ -80,6 +95,11 @@
 		.pager{
 			float: left;
 			margin: 0 20px 0 0; 
+
+			.mar-right{
+				margin-right: 15px;
+			}
+		
 			li {
 				>span{
 					border-radius: 0px;

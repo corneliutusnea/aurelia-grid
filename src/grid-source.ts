@@ -5,7 +5,7 @@ export interface IGridDataSource {
 	supportsPagination: boolean;
 	supportsSorting: boolean;
 	supportsMultiColumnSorting: boolean;
-		
+
 	count: number;
 	items: any[];
 	loading: boolean;
@@ -15,17 +15,17 @@ export interface IGridDataSource {
 	/** 10 - default page size */
 	pageSize: number;
 	pageCount: number;
-	
+
 	/** Dictionary of sorting name:asc|desc  */
 	sorting: Array<GridColumn>;
-	
+
 	/** grid was attached - start loading & monitoring for changes */
 	attached();
 	/** trigger a refresh */
 	refresh();
 	/** unbind - stop loading and monitoring for changes */
 	unbind();
-	
+
 	/** Trigger a sort changed - FIX: event for now is the click event */
 	sortChanged(column: GridColumn, event);
 }
@@ -55,8 +55,8 @@ export class GridDataSource implements IGridDataSource {
 	supportsPagination: boolean = false;
 	supportsSorting: boolean = false;
 	supportsMultiColumnSorting: boolean = false;
-	
-	count: number;
+
+	count: number = 0;
 	items: any[];
 	loading: boolean;
 
@@ -71,7 +71,7 @@ export class GridDataSource implements IGridDataSource {
 	constructor(grid: Grid) {
 		this.grid = grid;
 	}
-	
+
 
 	attached() {
 		this.page = 1;
@@ -80,19 +80,18 @@ export class GridDataSource implements IGridDataSource {
 			this.pageSize = this.grid.pager.pageSizes[0];
 		else
 			this.pageSize = 10;
-		
+
 		// process page sizes
 		if (this.grid.sourceAutoLoad) {
 			this.refresh();
 		}
 	}
 	refresh() {
-		debugger;
 		throw new Error("Data source does not implement read?");
 	}
 
 	updatePager() {
-		// TODO: 
+		// TODO:
 	}
 
 	onData() {
@@ -104,16 +103,19 @@ export class GridDataSource implements IGridDataSource {
 
 	unbind() {
 	}
-	
+
 	/** Events from Aurelia */
 	pageSizeChanged(newValue: number, oldValue: number) {
 		if(newValue == oldValue)
 			return;
 		this.refresh();
 	}
-	
+
 	/** ============ Sorting ============== */
 	sortChanged(column: GridColumn, event) {
+		if(!column.canSort)
+			return;
+			
 		// Determine new sort
 		var newSort = undefined;
 
@@ -149,4 +151,4 @@ export class GridDataSource implements IGridDataSource {
 		// Apply the new sort
 		this.refresh();
 	}
-} 
+}

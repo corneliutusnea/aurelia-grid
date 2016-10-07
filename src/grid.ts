@@ -1,8 +1,6 @@
 import {noView, children, bindable, child, inject, BindingEngine, customElement, processContent, TargetInstruction} from 'aurelia-framework';
 import {ViewCompiler, ViewSlot, ViewResources, Container} from 'aurelia-framework';
 
-import './aurelia-grid.css';
-
 import {GridColumn} from './grid-column';
 import {GridRowAttributes} from './grid-row';
 import {GridSelection} from './grid-selection';
@@ -65,9 +63,14 @@ export class Grid{
 	@bindable sourceSupportsPagination: boolean = false;
 	@bindable sourceSupportsSorting: boolean = false;
 	@bindable sourceSupportsMultiColumnSorting: boolean = false;
+
+	// no-data-message="No data"
+	@bindable noDataMessage: string = "";
 	
 	pager: GridPager;
 	
+	bindingContext: any;
+
 	constructor(element: Element, vc: ViewCompiler, vr: ViewResources, container: Container, targetInstruction: TargetInstruction, bindingEngine: BindingEngine) {
 		this.element = element;
 		this.viewCompiler = vc;
@@ -84,8 +87,8 @@ export class Grid{
 	}
 
 	unbinding: boolean = false;
-	bind(bindingContext){
-		this["$parent"] = bindingContext;
+	bind(bindingContext, overrideBindingContext){
+		this.bindingContext = bindingContext;
 	
 		// todo - make glyphicons and fa icons classes
 		this.icons = new GridIcons();
@@ -137,7 +140,11 @@ export class Grid{
 		}
 	}
 	
-	refresh(){
+	refresh(resetPage?: boolean){
+		// use reset when you want to start searches
+		if(resetPage)
+			this.source.page = 1;
+
 		this.source.refresh();
 	}
 	

@@ -37,21 +37,23 @@ System.register(['./grid-column', './grid-row', './grid-pager', 'aurelia-framewo
                     }
                     var columnElements = Array.prototype.slice.call(rowElement.querySelectorAll("grid-col"));
                     var cols = [];
-                    var columnTemplate = '<span class="grid-column-heading">${$column.heading}</span>' +
+                    var columnTemplate = '<div class="grid-column-header" click.trigger="$grid.source.sortChanged($column, $event)"><span class="grid-column-heading">${$column.heading}</span>' +
                         '<span if.bind="$column.sorting === \'desc\'" class="${$grid.icons.sortingDesc}"></span>' +
-                        '<span if.bind="$column.sorting === \'asc\'" class="${$grid.icons.sortingAsc}"></span>';
+                        '<span if.bind="$column.sorting === \'asc\'" class="${$grid.icons.sortingAsc}"></span></div>';
                     // <grid-col can-sort="true" heading="header"> ..
                     // or <grid-col can-sort="true"><heading>header template</heading><template>cell template</template> 
                     columnElements.forEach(function (c) {
                         var col = new grid_column_1.GridColumn();
                         var attrs = Array.prototype.slice.call(c.attributes);
-                        attrs.forEach(function (a) { return col[_this.camelCaseName(a.name)] = a.value; });
+                        attrs.forEach(function (a) { return _this.tryAssign(col, _this.camelCaseName(a.name), a.value); });
                         // check for inner <heading> of template
                         var headingTemplate = c.querySelector("heading");
                         col.headingTemplate = (headingTemplate && headingTemplate.innerHTML) ? headingTemplate.innerHTML : columnTemplate;
                         // check for inner content of <template> or use full content as template
                         var cellTemplate = c.querySelector("template");
                         col.template = (cellTemplate && cellTemplate.innerHTML) ? cellTemplate.innerHTML : c.innerHTML;
+                        var footerTemplate = c.querySelector("footer");
+                        col.footerTemplate = (footerTemplate && footerTemplate.innerHTML) ? footerTemplate.innerHTML : null;
                         col.init();
                         cols.push(col);
                     });
@@ -78,7 +80,9 @@ System.register(['./grid-column', './grid-row', './grid-pager', 'aurelia-framewo
                     }
                     // fill in all properties
                     var attrs = Array.prototype.slice.call(pagerElement.attributes);
-                    attrs.forEach(function (a) { return pager[_this.camelCaseName(a.name)] = a.value; });
+                    attrs.forEach(function (a) {
+                        _this.tryAssign(pager, _this.camelCaseName(a.name), a.value);
+                    });
                     var template = pagerElement.querySelector("template");
                     pager.template = (template && template.innerHTML) ? template.innerHTML : null;
                     return pager;
@@ -87,6 +91,20 @@ System.register(['./grid-column', './grid-row', './grid-pager', 'aurelia-framewo
                     return name.replace(/-([a-z])/g, function (g) { return g[1].toUpperCase(); });
                 };
                 ;
+                GridParser.prototype.tryAssign = function (target, name, value) {
+                    var existing = target[name];
+                    switch (typeof existing) {
+                        case 'boolean':
+                            target[name] = (value == 'true');
+                            break;
+                        case 'number':
+                            target[name] = parseInt(value);
+                            break;
+                        default:
+                            target[name] = value;
+                            break;
+                    }
+                };
                 return GridParser;
             })();
             exports_1("GridParser", GridParser);

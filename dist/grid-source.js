@@ -8,6 +8,7 @@ System.register([], function(exports_1) {
                     this.supportsPagination = false;
                     this.supportsSorting = false;
                     this.supportsMultiColumnSorting = false;
+                    this.count = 0;
                     this.page = 1;
                     this.pageCount = 0;
                     this.sorting = new Array();
@@ -25,11 +26,10 @@ System.register([], function(exports_1) {
                     }
                 };
                 GridDataSource.prototype.refresh = function () {
-                    debugger;
                     throw new Error("Data source does not implement read?");
                 };
                 GridDataSource.prototype.updatePager = function () {
-                    // TODO: 
+                    // TODO:
                 };
                 GridDataSource.prototype.onData = function () {
                     if (this.pageSize == 0)
@@ -41,13 +41,14 @@ System.register([], function(exports_1) {
                 };
                 /** Events from Aurelia */
                 GridDataSource.prototype.pageSizeChanged = function (newValue, oldValue) {
-                    debugger;
                     if (newValue == oldValue)
                         return;
                     this.refresh();
                 };
                 /** ============ Sorting ============== */
                 GridDataSource.prototype.sortChanged = function (column, event) {
+                    if (!column.canSort)
+                        return;
                     // Determine new sort
                     var newSort = undefined;
                     // Figure out which way this field should be sorting

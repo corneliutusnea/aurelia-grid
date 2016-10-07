@@ -31,11 +31,26 @@ System.register(['./grid-source'], function(exports_1) {
                     var sort = this.sorting.map(function (s) {
                         return { field: s.field, sorting: s.sorting };
                     });
-                    var d = this.dataRead({
+                    var requestInfo = {
                         page: this.page,
                         pageSize: this.pageSize,
                         sort: sort
-                    });
+                    };
+                    if (sort && sort.length > 0) {
+                        // add the default sort field and sort to the default requestInfo
+                        var s0 = sort[0];
+                        requestInfo["field"] = s0["field"];
+                        requestInfo["sorting"] = s0["sorting"];
+                    }
+                    var d = this.dataRead(requestInfo);
+                    if (!d) {
+                        // uh - no result
+                        this.count = 0;
+                        this.items = [];
+                        this.loading = false;
+                        this.onData();
+                        return;
+                    }
                     if (d.then) {
                         d.then(function (result) {
                             _this.handleResult(result);
@@ -72,8 +87,16 @@ System.register(['./grid-source'], function(exports_1) {
                         }
                     }
                     if (r) {
-                        this.count = r.count;
-                        this.items = r.data;
+                        this.count = r.count || 0;
+                        this.items = r.data || [];
+                    }
+                    else {
+                        this.count = 0;
+                        this.items = [];
+                    }
+                    if (this.count == 0) {
+                        this.page = 1;
+                        this.pageCount = 0;
                     }
                     this.onData();
                 };

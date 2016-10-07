@@ -1,4 +1,4 @@
-System.register(['aurelia-framework', './grid-selection', './grid-builder', './grid-icons', './grid-pager', './grid-parser', './grid-source', './grid-local-source', './grid-delegate-source'], function(exports_1) {
+System.register(['aurelia-framework', './grid-selection', './grid-builder', './grid-icons', './grid-parser', './grid-source', './grid-local-source', './grid-delegate-source'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['aurelia-framework', './grid-selection', './grid-builder', './g
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var aurelia_framework_1, aurelia_framework_2, grid_selection_1, grid_builder_1, grid_icons_1, grid_pager_1, grid_parser_1, D, grid_local_source_1, grid_delegate_source_1;
+    var aurelia_framework_1, aurelia_framework_2, grid_selection_1, grid_builder_1, grid_icons_1, grid_parser_1, D, grid_local_source_1, grid_delegate_source_1;
     var Grid;
     function processUserTemplate(element) {
         var parser = new grid_parser_1.GridParser();
@@ -28,9 +28,6 @@ System.register(['aurelia-framework', './grid-selection', './grid-builder', './g
             },
             function (grid_icons_1_1) {
                 grid_icons_1 = grid_icons_1_1;
-            },
-            function (grid_pager_1_1) {
-                grid_pager_1 = grid_pager_1_1;
             },
             function (grid_parser_1_1) {
                 grid_parser_1 = grid_parser_1_1;
@@ -58,7 +55,8 @@ System.register(['aurelia-framework', './grid-selection', './grid-builder', './g
                     this.sourceSupportsPagination = false;
                     this.sourceSupportsSorting = false;
                     this.sourceSupportsMultiColumnSorting = false;
-                    this.paginationEnabled = true;
+                    // no-data-message="No data"
+                    this.noDataMessage = "";
                     this.unbinding = false;
                     this.pageSize = 25;
                     this.element = element;
@@ -72,8 +70,8 @@ System.register(['aurelia-framework', './grid-selection', './grid-builder', './g
                     this.selection = new grid_selection_1.GridSelection(this);
                     this.builder = new grid_builder_1.GridBuilder(this, this.element);
                 }
-                Grid.prototype.bind = function (bindingContext) {
-                    this["$parent"] = bindingContext;
+                Grid.prototype.bind = function (bindingContext, overrideBindingContext) {
+                    this.bindingContext = bindingContext;
                     // todo - make glyphicons and fa icons classes
                     this.icons = new grid_icons_1.GridIcons();
                     switch (this.sourceType) {
@@ -115,7 +113,10 @@ System.register(['aurelia-framework', './grid-selection', './grid-builder', './g
                         this.gridContainer.removeAttribute("style");
                     }
                 };
-                Grid.prototype.refresh = function () {
+                Grid.prototype.refresh = function (resetPage) {
+                    // use reset when you want to start searches
+                    if (resetPage)
+                        this.source.page = 1;
                     this.source.refresh();
                 };
                 Grid.prototype.pageSizeChanged = function (newValue, oldValue) {
@@ -216,14 +217,6 @@ System.register(['aurelia-framework', './grid-selection', './grid-builder', './g
                     __metadata('design:type', Boolean)
                 ], Grid.prototype, "sourceSupportsMultiColumnSorting", void 0);
                 __decorate([
-                    aurelia_framework_1.child('pg'), 
-                    __metadata('design:type', grid_pager_1.GridPager)
-                ], Grid.prototype, "pg", void 0);
-                __decorate([
-                    aurelia_framework_1.bindable, 
-                    __metadata('design:type', Boolean)
-                ], Grid.prototype, "paginationEnabled", void 0);
-                __decorate([
                     aurelia_framework_1.bindable, 
                     __metadata('design:type', String)
                 ], Grid.prototype, "noDataMessage", void 0);
@@ -241,7 +234,7 @@ System.register(['aurelia-framework', './grid-selection', './grid-builder', './g
                         return true;
                     }),
                     aurelia_framework_1.inject(Element, aurelia_framework_2.ViewCompiler, aurelia_framework_2.ViewResources, aurelia_framework_2.Container, aurelia_framework_1.TargetInstruction, aurelia_framework_1.BindingEngine), 
-                    __metadata('design:paramtypes', [Object, aurelia_framework_2.ViewCompiler, aurelia_framework_2.ViewResources, aurelia_framework_2.Container, aurelia_framework_1.TargetInstruction, aurelia_framework_1.BindingEngine])
+                    __metadata('design:paramtypes', [Element, aurelia_framework_2.ViewCompiler, aurelia_framework_2.ViewResources, aurelia_framework_2.Container, aurelia_framework_1.TargetInstruction, aurelia_framework_1.BindingEngine])
                 ], Grid);
                 return Grid;
             })();

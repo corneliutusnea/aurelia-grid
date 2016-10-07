@@ -17,7 +17,7 @@ Features:
 Upcoming Features:
 * Remote Data Source
 * Multi-Select
-* Column Filters 
+* Column Filters
 
 # Documentation
 * [Using the grid](#using-the-grid)
@@ -40,15 +40,19 @@ Upcoming Features:
   ```
   jspm install github:corneliutusnea/aurelia-grid
   ```
-Note: I'm still missing the config for JSPM to install this package!
-1. In order to import the plugin you need to be [manually bootstrapping Aurelia](http://aurelia.io/docs#startup-and-configuration).
+  Note: I'm still missing the config for JSPM to install this package!
+  Alternatively (if you are using webpack) you can install the package using `npm`
+  ```
+  npm install aurelia-grid
+  ```
+2. In order to import the plugin you need to be [manually bootstrapping Aurelia](http://aurelia.io/docs#startup-and-configuration).
 
   Open your `index.html` or equivalent and find your `aurelia-app` attribute and change it to:
 
   ```html
     <body aurelia-app="main">
   ```
-1. Create a `main.js` file in your src directory and import the plugin using the `aurelia` configuration object
+3. Create a `main.js` file in your src directory and import the plugin using the `aurelia` configuration object
 
   ```javascript
   export function configure(aurelia) {
@@ -148,7 +152,7 @@ Inside the Grid Heading Template you have access to the following properties
 ```
 **Note:**
 Each row will be in the scope of the `repeat` element, so in order to get back to your consuming viewmodel you need to jump up two levels (up to the `grid` scope then up to your viewmodel scope)
-You can use `$parent` to reference the grid scope and `$parent.$parent` to get back to your viewmodel. Hopefully this won't be neccessary in later versions of Aurelia.
+You can use `$grid` to reference the grid scope and `$p` to get back to your own viewmodel.
 
 # Grid Data Source
 The grid supports 3 types of data sources:
@@ -180,7 +184,7 @@ The pager can also be completly overwritten with your own custom pager.
 You can also create a method `selectedChanged(newValue)` that [Aurelia will automatically call when the `selected` property is changed](http://aurelia.io/docs.html#/aurelia/framework/1.0.0-beta.1.0.8/doc/article/cheat-sheet/8).
    
 ## Grid Methods
-* **refresh()** - Force the grid to refresh immediatelly.
+* **refresh(resetPage?:boolean)** - Force the grid to refresh immediatelly. Optional `boolean` paramter to reset the grid back to page 0.
 You can [get a reference to the grid accessible from your code](http://aurelia.io/docs.html#/aurelia/framework/1.0.0-beta.1.0.8/doc/article/cheat-sheet/5) using `grid.ref="mygrid"`.
 ```html
 <grid grid.ref="myGrid" ...>
@@ -195,3 +199,23 @@ function doSomeWork(){
 }
 ```
 
+## Grid Icons
+The grid is using by default the icons from [font-awesome](fontawesome.io/icons/).
+All the icons are defined in the `grid-icons.js` file. You can replace the grid icons by setting a different `grid.icons`.
+
+  ```
+  var myIcons = {
+    refresh: "fa fa-refresh",
+    sortingAsc: "fa fa-sort-asc text-primary",
+    sortingDesc: "fa fa-sort-desc text-primary",
+    firstPage: "fa fa-step-backward",
+    firstPageTitle: "First page",
+    prevPage: "fa fa-caret-left",
+    prevPageTitle: "Previous page",
+    nextPage: "fa fa-caret-right",
+    nextPageTitle: "Next page",
+    lastPage: "fa fa-step-forward",
+    lastPageTitle: "Last page",
+  }
+  this.grid.icons = myIcons;
+  ```

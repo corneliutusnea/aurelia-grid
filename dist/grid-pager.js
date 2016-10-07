@@ -30,6 +30,7 @@ System.register(['aurelia-framework'], function(exports_1) {
                     this.prevDisabled = false;
                     this.firstVisibleItem = 0;
                     this.lastVisibleItem = 0;
+                    this.autoHide = false;
                     this.pages = [];
                 }
                 GridPager.prototype.refresh = function () {
@@ -62,13 +63,20 @@ System.register(['aurelia-framework'], function(exports_1) {
                     }
                     ;
                     this.pages = pages;
-                    this.firstVisibleItem = (this.grid.source.page - 1) * Number(this.grid.source.pageSize) + 1;
-                    this.lastVisibleItem = Math.min((this.grid.source.page) * Number(this.grid.source.pageSize), this.grid.source.count);
+                    if (this.grid.source.count > 0) {
+                        this.firstVisibleItem = (this.grid.source.page - 1) * Number(this.grid.source.pageSize) + 1;
+                        this.lastVisibleItem = Math.min((this.grid.source.page) * Number(this.grid.source.pageSize), this.grid.source.count);
+                    }
+                    else {
+                        this.firstVisibleItem = 0;
+                        this.lastVisibleItem = 0;
+                        this.pages = [];
+                    }
                     this.updateButtons();
                 };
                 GridPager.prototype.updateButtons = function () {
-                    this.nextDisabled = this.grid.source.page === this.grid.source.pageCount;
-                    this.prevDisabled = this.grid.source.page === 1;
+                    this.nextDisabled = this.grid.source.page >= this.grid.source.pageCount;
+                    this.prevDisabled = this.grid.source.page <= 1;
                 };
                 // pageSizeChanged(newValue: number, oldValue: number) {
                 // 	debugger;
@@ -145,6 +153,10 @@ System.register(['aurelia-framework'], function(exports_1) {
                     aurelia_framework_1.bindable, 
                     __metadata('design:type', Number)
                 ], GridPager.prototype, "lastVisibleItem", void 0);
+                __decorate([
+                    aurelia_framework_1.bindable, 
+                    __metadata('design:type', Boolean)
+                ], GridPager.prototype, "autoHide", void 0);
                 return GridPager;
             })();
             exports_1("GridPager", GridPager);

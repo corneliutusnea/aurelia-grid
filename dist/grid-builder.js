@@ -1,10 +1,11 @@
 System.register(['aurelia-framework'], function(exports_1) {
-    var aurelia_framework_1;
+    var aurelia_framework_1, aurelia_framework_2;
     var GridBuilder;
     return {
         setters:[
             function (aurelia_framework_1_1) {
                 aurelia_framework_1 = aurelia_framework_1_1;
+                aurelia_framework_2 = aurelia_framework_1_1;
             }],
         execute: function() {
             GridBuilder = (function () {
@@ -35,17 +36,17 @@ System.register(['aurelia-framework'], function(exports_1) {
                         var fragment = document.createDocumentFragment();
                         var th = document.createElement("th");
                         th.setAttribute("class", "grid-column ${$column.headerClass} ${($column.canSort && $grid.columnsCanSort) ? 'grid-column-sortable': 'grid-column-non-sortable'} ${ $column.class !== '' ? $column.class : '' }");
-                        th.setAttribute("click.trigger", "$grid.source.sortChanged($column, $event)");
                         th.innerHTML = c.headingTemplate;
                         fragment.appendChild(th);
                         var view = _this.viewCompiler.compile(fragment, _this.viewResources).create(_this.container);
                         var bindingContext = {
-                            // I'm having problem if I try to use $parent. The template never seems to see that
                             '$grid': _this.grid,
                             '$column': c,
+                            '$p': _this.grid.bindingContext
                         };
-                        view.bind(bindingContext, _this.grid);
-                        var columnSlot = new aurelia_framework_1.ViewSlot(theadTr, true);
+                        var context = aurelia_framework_1.createOverrideContext(bindingContext, _this.grid.bindingContext);
+                        view.bind(_this.grid, context);
+                        var columnSlot = new aurelia_framework_2.ViewSlot(theadTr, true);
                         columnSlot.add(view);
                         columnSlot.attached();
                         c.slot = columnSlot;
@@ -54,17 +55,16 @@ System.register(['aurelia-framework'], function(exports_1) {
                     });
                 };
                 GridBuilder.prototype.buildRowTemplate = function () {
-                    var _this = this;
                     // The table body element will host the rows
                     var tbody = this.element.querySelector("table>tbody");
-                    this.rowsViewSlot = new aurelia_framework_1.ViewSlot(tbody, true);
+                    this.rowsViewSlot = new aurelia_framework_2.ViewSlot(tbody, true);
                     // Get the row template too and add a repeater/class
                     var row = tbody.querySelector("tr");
                     this.rowTemplate = document.createDocumentFragment();
                     this.rowTemplate.appendChild(row);
                     // builds <template><tr repeat.for="$item of data">...</template>
                     row.setAttribute("repeat.for", "$item of source.items");
-                    row.setAttribute("class", "${ $item === $parent.selectedItem ? 'info' : '' }");
+                    row.setAttribute("class", "${ $item === $grid.selectedItem ? 'info' : '' }");
                     // TODO: Do we allow the user to customise the row template or just
                     // provide a callback?
                     // Copy any user specified row attributes to the row template
@@ -77,35 +77,22 @@ System.register(['aurelia-framework'], function(exports_1) {
                     var rowTemplate = this.rowTemplate.cloneNode(true);
                     var row = rowTemplate.querySelector("tr");
                     // Create the columns
-                    this.template.columns.forEach(function (c) {
+                    this.template.columns.forEach(function (col) {
                         var td = document.createElement("td");
-                        // Set attributes
-                        for (var prop in c) {
-                            if (c.hasOwnProperty(prop)) {
-                                if (prop == "template")
-                                    td.innerHTML = c[prop];
-                                else
-                                    td.setAttribute(prop, c[prop]);
-                            }
-                        }
+                        td.innerHTML = col["template"];
+                        td.className = col["class"];
                         row.appendChild(td);
                     });
                     // Now compile the row template
                     var view = this.viewCompiler.compile(rowTemplate, this.viewResources).create(this.container);
-                    // Templating 17.x changes the API
-                    // ViewFactory.create() no longer takes a binding context (2nd parameter)
-                    // Instead, must call view.bind(context)
-                    view.bind(this.grid);
-                    // based on viewSlot.swap() from templating 0.16.0
-                    var removeResponse = this.rowsViewSlot.removeAll();
-                    if (removeResponse instanceof Promise) {
-                        removeResponse.then(function () { return _this.rowsViewSlot.add(view); });
-                    }
+                    var bindingContext = {
+                        '$grid': this.grid,
+                        '$p': this.grid.bindingContext
+                    };
+                    var context = aurelia_framework_1.createOverrideContext(bindingContext, this.grid.bindingContext);
+                    view.bind(this.grid, context);
                     this.rowsViewSlot.add(view);
-                    // code above replaces the following call
                     this.rowsViewSlot.attached();
-                    // HACK: why is the change handler not firing for noRowsMessage?
-                    // this.noRowsMessageChanged(); /???
                 };
                 GridBuilder.prototype.buildPagerTemplate = function () {
                     // build the custom template for the pager (if it exists)
@@ -115,7 +102,7 @@ System.register(['aurelia-framework'], function(exports_1) {
                         // todo - remove the thost somehow
                         return;
                     }
-                    this.pagerViewSlot = new aurelia_framework_1.ViewSlot(thost, true);
+                    this.pagerViewSlot = new aurelia_framework_2.ViewSlot(thost, true);
                     var template = document.createDocumentFragment();
                     var templateValue = document.createElement('div');
                     template.appendChild(templateValue);
@@ -128,16 +115,15 @@ System.register(['aurelia-framework'], function(exports_1) {
                         '$pager': this.grid.pager,
                         '$source': this.grid.source
                     };
-                    view.bind(bindingContext, this.grid);
+                    var context = aurelia_framework_1.createOverrideContext(bindingContext, this.grid.bindingContext);
+                    view.bind(this.grid, context);
                     this.pagerViewSlot.add(view);
                     this.pagerViewSlot.attached();
                 };
                 GridBuilder.prototype.unbind = function () {
                     window.removeEventListener('resize', this.resizeListener);
-                    //this.dontWatchForChanges();
                 };
                 GridBuilder.prototype.headersSyncColumnHeadersWithColumns = function () {
-                    debugger;
                     // Get the first row from the data if there is one...
                     var cells = this.element.querySelectorAll("table>tbody>tr:first-child>td");
                     for (var i = this.grid.gridHeaders.length - 1; i >= 0; i--) {
@@ -155,8 +141,7 @@ System.register(['aurelia-framework'], function(exports_1) {
                     ;
                 };
                 GridBuilder.prototype.isBodyOverflowing = function () {
-                    var container = this.grid.gridContainer();
-                    ;
+                    var container = this.grid.gridContainer;
                     return container.offsetHeight < container.scrollHeight || container.offsetWidth < container.scrollWidth;
                 };
                 return GridBuilder;

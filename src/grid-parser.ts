@@ -30,9 +30,9 @@ export class GridParser {
 		var cols = [];
 
 		var columnTemplate =
-			'<span class="grid-column-heading">${$column.heading}</span>' +
+			'<div class="grid-column-header" click.trigger="$grid.source.sortChanged($column, $event)"><span class="grid-column-heading">${$column.heading}</span>' +
 			'<span if.bind="$column.sorting === \'desc\'" class="${$grid.icons.sortingDesc}"></span>' +
-			'<span if.bind="$column.sorting === \'asc\'" class="${$grid.icons.sortingAsc}"></span>';
+			'<span if.bind="$column.sorting === \'asc\'" class="${$grid.icons.sortingAsc}"></span></div>';
 
 		// <grid-col can-sort="true" heading="header"> ..
 		// or <grid-col can-sort="true"><heading>header template</heading><template>cell template</template> 
@@ -49,6 +49,9 @@ export class GridParser {
 			// check for inner content of <template> or use full content as template
 			var cellTemplate = c.querySelector("template");
 			col.template = (cellTemplate && cellTemplate.innerHTML) ? cellTemplate.innerHTML : c.innerHTML;
+
+			var footerTemplate = c.querySelector("footer");
+			col.footerTemplate = (footerTemplate && footerTemplate.innerHTML) ? footerTemplate.innerHTML : null;
 
 			col.init();
 			cols.push(col);

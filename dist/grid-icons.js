@@ -5,9 +5,17 @@ System.register([], function(exports_1) {
         execute: function() {
             GridIcons = (function () {
                 function GridIcons() {
-                    this.sortingDesc = "glyphicon glyphicon-triangle-top text-primary";
-                    this.sortingAsc = "glyphicon glyphicon-triangle-bottom text-primary";
-                    this.removeFilter = "glyphicon glyphicon-search text-muted";
+                    this.refresh = "fa fa-refresh";
+                    this.sortingAsc = "fa fa-sort-asc text-primary";
+                    this.sortingDesc = "fa fa-sort-desc text-primary";
+                    this.firstPage = "fa fa-step-backward";
+                    this.firstPageTitle = "First page";
+                    this.prevPage = "fa fa-caret-left";
+                    this.prevPageTitle = "Previous page";
+                    this.nextPage = "fa fa-caret-right";
+                    this.nextPageTitle = "Next page";
+                    this.lastPage = "fa fa-step-forward";
+                    this.lastPageTitle = "Last page";
                 }
                 return GridIcons;
             })();

@@ -5,7 +5,7 @@ The pager can also be completly overwritten with your own custom pager.
 
 Format of the pager
 ```
-[First] [...] [<<] [1] [2] [**3**] [4] [5] [>>] [...] [Last]		[10 ] items per page	Showing 20 - 30 of 10000 items
+[Refresh] [|<] [1] [2] [**3**] [4] [5] [>|]		[10 ] items per page	Showing 20 - 30 of 10000 items
 ```
 
 ## Default Pager Properties
@@ -20,8 +20,7 @@ To control the various properties of the pager you need to declare the `grid-pag
  ```
 
 * `num-pager-to-show="5"` - Number of pages to show around the current page `[1] .. [5]`
-* `show-first-last="true|false"` - Wherever to show the `[First]` and `[Last]` links
-* `show-jump="true|false"` - Wherever to show the `[...]` jump links
+* `show-first-last="true|false"` - Wherever to show the `[|<]` and `[>|]` links
 * `show-paging-summary="true|false"` - Wherever to show the summary `Showing 20 - 30 of 10000 items`
 * `page-sizes="[10, 25, 50]"` - The options in the pagination control
 

@@ -6,6 +6,16 @@ System.register([], function(exports_1) {
             /** All Attributes on <grid-col  */
             GridColumn = (function () {
                 function GridColumn() {
+                    this.heading = "";
+                    this.field = "";
+                    this.class = "";
+                    this.headerClass = "";
+                    this.canSort = false;
+                    this.canFilter = false;
+                    this.filterPlaceholder = "";
+                    /** Value for filtering */
+                    this.filterValue = "";
+                    this.sorting = ""; // asc|desc
                 }
                 GridColumn.prototype.init = function () {
                     // we can accept the field to be null if the column has no sorting enabled

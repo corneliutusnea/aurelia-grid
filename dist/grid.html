@@ -1,26 +1,10 @@
 <template>
-	<require from="./aurelia-grid.css!"></require>
+	<require from="./aurelia-grid.css"></require>
 	<div class="aurelia-grid grid-container">
 		<table class="table table-hover table-striped table-responsive grid-header-table">
 			<thead>
-				<tr role="button" class="grid-headings">
-					<!--<th
-					class="grid-column ${column.headerClass} ${($column.canSort && $parent.columnsCanSort) ? 'grid-column-sortable': 'grid-column-non-sortable'} ${ $column.class !== '' ? $column.class : '' }"
-					click.trigger="$parent.source.sortChanged($column, $event)"
-					>
-						<span class="grid-column-heading">${ $column.heading }</span>
-						<span if.bind="$column.sorting === 'desc'" class="${$parent.icons.sortingDesc}"></span>
-						<span if.bind="$column.sorting === 'asc'" class="${$parent.icons.sortingAsc}"></span>
-					</th>-->
+				<tr class="grid-headings">
 				</tr>
-				<!--<tr if.bind="columnsCanFilter" class="grid-column-filters">
-					<th repeat.for="$column of template.columns" class="${ $column.class !== '' ? $column.class : '' }">
-						<div if.bind="$column.canFilter">
-							<input class="form-control" value.bind="$column.filterValue" placeholder.bind="$column.filterPlaceholder" input.delegate="$parent.updateFilters()"></input>
-							<span class="${$parent.icons.removeFilter}"></span>
-						</div>
-					</th>
-				</tr>-->
 			</thead>
 		</table>
 
@@ -28,11 +12,11 @@
 		<div class="grid-content-container">
 			<table class="table table-hover table-striped table-responsive selectable" show.bind="!noDataMessage || (noDataMessage && source.count > 0)">
 				<tbody>
-					<tr role="button" click.delegate="$parent.selection.select($item, $event)">
+					<tr click.delegate="$grid.selection.select($item, $event)">
 					</tr>
 				</tbody>
 			</table>
-			<div show.bind="noDataMessage && source.count === 0" class="alert alert-warning grid-no-data-message">${ noDataMessage }</div>
+			<div show.bind="!source.loading && noDataMessage && source.count === 0" class="alert alert-warning grid-no-data-message">${ noDataMessage }</div>
 		</div>
 		<div class="grid-overlay" if.bind="source.loading"></div>
 
@@ -43,17 +27,21 @@
 		</div>
 
 		<!-- Footer div -->
-		<div class="grid-footer-container" if.bind="paginationEnabled && !pager.template">
+		<div class="grid-footer-container" if.bind="(!pager.autoHide || source.pageCount > 1) && !pager.template">
 			<div class="pager">
 				<ul class="pagination">
+					<li>
+						<a class="mar-right" href="" title="Refresh" click.delegate="refresh()"><span class.bind="icons.refresh"></span></a>
+					</li>
+
 					<li if.bind="pager.showFirstLast" class="${ pager.prevDisabled ? 'disabled' : '' }">
-						<a href="" click.delegate="pager.first()" aria-label="First"><span aria-hidden="true">First</span></a>
+						<a href=""  title.bind="icons.firstPageTitle" click.delegate="pager.first()" aria-label="First"><span class.bind="icons.firstPage"></span></a>
 					</li>
-					<li if.bind="pager.showJump" class="${ pager.prevDisabled ? 'disabled' : '' }">
+					<!--<li if.bind="pager.showJump" class="${ pager.prevDisabled ? 'hidden' : '' }">
 						<a href="" click.delegate="pager.prevJump()" aria-label="Next"><span aria-hidden="true">&#8230;</span></a>
-					</li>
+					</li>-->
 					<li class="${ pager.prevDisabled ? 'disabled' : '' }">
-						<a href="" click.delegate="pager.prev()" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+						<a href="" title.bind="icons.prevPageTitle" click.delegate="pager.prev()" aria-label="Previous"><span class.bind="icons.prevPage"></span></a>
 					</li>
 					<li repeat.for="curPage of pager.pages" class="${ curPage == source.page ? 'active' : '' }">
 						<!-- This span is an IE bug fix - if a &raquo; or many other chars are used before an interpolation for some reason that interpolation fails, following ones are fine (this is for the same property). Adding an invisible span with an interpolate in it fixes the issue  -->
@@ -61,12 +49,12 @@
 						<a href="" click.delegate="pager.changePage(curPage)">${curPage}</a>
 					</li>
 					<li class="${ pager.nextDisabled ? 'disabled' : '' }">
-						<a href="" click.delegate="pager.next()" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+						<a href="" title.bind="icons.nextPageTitle" click.delegate="pager.next()" aria-label="Next"><span class.bind="icons.nextPage"></span></a>
 					</li>
-					<li if.bind="pager.showJump" class="${ pager.nextDisabled ? 'disabled' : '' }"><a href="" click.delegate="pager.nextJump()" aria-label="Next"><span aria-hidden="true">&#8230;</span></a>
-					</li>
+					<!--<li if.bind="pager.showJump" class="${ pager.nextDisabled ? 'disabled' : '' }"><a href="" click.delegate="pager.nextJump()" aria-label="Next"><span aria-hidden="true">&#8230;</span></a>
+					</li>-->
 					<li if.bind="pager.showFirstLast" class="${ pager.nextDisabled ? 'disabled' : '' }">
-						<a href="" click.delegate="pager.last()" aria-label="Last"><span aria-hidden="true">Last</span></a>
+						<a href="" title.bind="icons.lastPageTitle" click.delegate="pager.last()" aria-label="Last"><span class.bind="icons.lastPage"></span></a>
 					</li>
 				</ul>
 			</div>

@@ -25,9 +25,11 @@ export class GridPager {
 
 	@bindable firstVisibleItem: number = 0;
 	@bindable lastVisibleItem: number = 0;
+	
+	@bindable autoHide: boolean = false;
 
 	pages = [];
-
+	
 	constructor() {
 	}
 
@@ -71,15 +73,22 @@ export class GridPager {
 
 		this.pages = pages;
 
-		this.firstVisibleItem = (this.grid.source.page - 1) * Number(this.grid.source.pageSize) + 1;
-		this.lastVisibleItem = Math.min((this.grid.source.page) * Number(this.grid.source.pageSize), this.grid.source.count);
+		if(this.grid.source.count > 0)
+		{
+			this.firstVisibleItem = (this.grid.source.page - 1) * Number(this.grid.source.pageSize) + 1;
+			this.lastVisibleItem = Math.min((this.grid.source.page) * Number(this.grid.source.pageSize), this.grid.source.count);
+		} else{
+			this.firstVisibleItem = 0;
+			this.lastVisibleItem = 0;
+			this.pages = [];
+		}
 
 		this.updateButtons();
 	}
 
 	updateButtons() {
-		this.nextDisabled = this.grid.source.page === this.grid.source.pageCount;
-		this.prevDisabled = this.grid.source.page === 1;
+		this.nextDisabled = this.grid.source.page >= this.grid.source.pageCount;
+		this.prevDisabled = this.grid.source.page <= 1;
 	}
 
 	// pageSizeChanged(newValue: number, oldValue: number) {
