@@ -9,7 +9,7 @@ export class LocalData {
         var data = [];
         var names = ["charles", "john", "oliver", "fred", "dean", "chris", "pete", "steve", "lee", "rob", "alex", "rose", "mike", "dan", "james", "rebecca", "heather", "kate", "liam"];
 
-        for (var i = 0; i < 1000; i++) {
+        for (var i = 0; i < 100; i++) {
         	var n = names[Math.floor(Math.random() * names.length)];
             data.push({
                 id: i,
