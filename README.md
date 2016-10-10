@@ -1,4 +1,6 @@
 # aurelia-grid
+
+[![Join the chat at https://gitter.im/corneliutusnea/aurelia-grid](https://badges.gitter.im/corneliutusnea/aurelia-grid.svg)](https://gitter.im/corneliutusnea/aurelia-grid?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 A fresh Aurelia Grid written in TypeScript based [charlespockert's Aurelia BS Grid](https://github.com/charlespockert/aurelia-bs-grid).
 
 [![Gitter](https://badges.gitter.im/corneliutusnea/aurelia-grid.svg)](https://gitter.im/corneliutusnea/aurelia-grid?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge)
