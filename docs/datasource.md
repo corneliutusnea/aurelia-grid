@@ -2,7 +2,7 @@
 The grid supports 3 types of data sources:
 * `source-type="local"` - All the data is already present and you can give it to the grid immediatelly.
 The grid will provide filtering, pagination and sorting including multi-column filtering.
-* `source-type="delegate"` - The data retrival can be delegated to a function that will receive a callback
+* `source-type="delegate"` - The data retrieval can be delegated to a function that will receive a callback
 with information about the page, sorting and filtering.
 * `source-type="remote"` - The data is retrieved from a remote URL. Filtering, pagination and sorting can be provided
 by the server. 
